@@ -11,10 +11,11 @@
               <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
                 <div v-if="!registerActive" class="card login" v-bind:class="{ error: emptyFields }">
                     <h1>Sign In</h1>
-                    <form class="form-group">
-                      <input v-model="emailLogin" type="email" class="form-control" placeholder="Email" required>
-                      <input v-model="passwordLogin" type="password" class="form-control" placeholder="Password" required>
-                      <input type="submit" class="btn btn-primary" @click="doLogin">
+                    <form class="form-group" @submit.prevent="login">
+                      <input v-model="email" type="email" class="form-control" placeholder="Email" required>
+                      <input v-model="password" type="password" class="form-control" placeholder="Password" required>
+                      <input type="submit" class="btn btn-primary">
+                      <p>{{email}}{{password}}</p>
                       <p>Don't have an account? <a href="#" @click="registerActive = !registerActive, emptyFields = false">Sign up here</a>
                       </p>
                     </form>
@@ -64,7 +65,7 @@
       </v-card>
     </v-dialog>
   </div> -->
-  
+  <p>{{msg}}</p>
   <v-btn elevation="5" @click="currentComponent = 'CorrectAnswersRateMap'">正答率</v-btn>
   <v-btn elevation="5" @click="currentComponent = 'BookMarkMap'">ブックマーク</v-btn>
   <CorrectAnswersRateMap v-if="currentComponent === 'CorrectAnswersRateMap'"></CorrectAnswersRateMap>
@@ -74,22 +75,54 @@
 <script>
 import CorrectAnswersRateMap from '@/components/correctAnswersRateMap.vue'
 import BookMarkMap from '@/components/bookMarkMap.vue'
+import { ref } from 'vue'
+import axios from 'axios';
+
 export default {
   name: 'TopPage',
   components: {
     CorrectAnswersRateMap,
     BookMarkMap
   },
-  data() {
-    return {
-      currentComponent: "BookMarkMap",
-      isShow: false,
-    };
-  },
-  methods: {
-    dialogToggle: function() {
-      this.isShow = !this.isShow;
+  setup() {
+    const currentComponent = ref("CorrectAnswersRateMap")
+    const isShow = ref(false)
+    const registerActive = ref (true)
+    const email = ref("")
+    const password = ref("")
+    let msg = ref("hello");
+
+    const login = async() => {
+      const params = new URLSearchParams();
+      params.append('email', email.value);
+      params.append('password', password.value);
+      console.log(params);
+      axios.post('http://kubernetes.docker.internal:8888/login',params)
+      .then(res => {
+          console.log(res);
+          msg.value = res.data.msg;
+          
+      })
+      .catch(error => {
+          console.log(error.response.data.err_msg);
+          msg.value = error.response.data.err_msg;
+      });
     }
+
+    const dialogToggle = () => {
+      isShow.value = !isShow.value;
+    }
+
+    return {
+      currentComponent,
+      isShow,
+      registerActive,
+      email,
+      password,
+      login,
+      dialogToggle,
+      msg,
+    };
   }
 };
 </script>
