@@ -28,10 +28,13 @@ export default {
             if(!des[i]) des[i] = '';
           }
           let colorWeight;
-          if (props.mapMode == 'correctAnswerRate'){
+          console.log(props.mapMode)
+          if (props.mapMode == 'correctAnswersRate'){
             colorWeight = data.map_info[i].weight;
+            console.log("a")
           }else if (props.mapMode == 'bookMark'){
             colorWeight = data.map_info[i].bookmark;
+            console.log("b")
           }
           let newData = {
             colorWeight : colorWeight * 100, 
