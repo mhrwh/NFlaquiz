@@ -97,7 +97,7 @@ export default {
       params.append('email', email.value);
       params.append('password', password.value);
       console.log(params);
-      axios.post('http://kubernetes.docker.internal:8888/login',params)
+      axios.post('http://kubernetes.docker.internal:8888/login',params,)
       .then(res => {
           console.log(res);
           msg.value = res.data.msg;

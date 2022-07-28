@@ -34,7 +34,7 @@ export default {
           //   colorWeight = data.map_info[i].bookmark;
           // }
           let newData = {
-            colorWeight : data.map_info[i].weight, // colorWeight
+            colorWeight : data.map_info[i].weight * 100, // colorWeight
             description1 : des[0],
             description2 : des[1],
             description3 : des[2],
@@ -46,7 +46,7 @@ export default {
           };
           
           mapData.values[data.map_info[i].id] = newData;
-          
+          console.log(mapData.values[data.map_info[i].id])
           jpName[data.map_info[i].id] = data.map_info[i].name;
         }
         new svgMap({
