@@ -1,184 +1,28 @@
 <template>
- <div id="dialog">
-    
-    <button  @click="dialogToggle"
-      >dialog</button
-    >
-    <transition>
-      <div class="dialog"  v-drag v-if="isShow" > 
-        <div class="container">
-          <div class="row">
-              <div class="col-lg-auto col-md-auto col-sm-auto mx-auto" style="padding: 0;">
-                <div v-if="!registerActive" class="card login" v-bind:class="{ error: emptyFields }">
-                    <h1>Sign In</h1>
-                    <form class="form-group" @submit.prevent="login">
-                      <input v-model="email" type="email" class="form-control" placeholder="Email" required>
-                      <input v-model="password" type="password" class="form-control" placeholder="Password" required>
-                      <input type="submit" class="btn btn-primary">
-                      <p>{{email}}{{password}}</p>
-                      <p>Don't have an account? <a href="#" @click="registerActive = !registerActive, emptyFields = false">Sign up here</a>
-                      </p>
-                    </form>
-                </div>
-
-                <div v-else class="card register" v-bind:class="{ error: emptyFields }">
-                    <h1>Sign Up</h1>
-                    <form class="form-group">
-                      <input v-model="emailReg" type="email" class="form-control" placeholder="Email" required>
-                      <input v-model="passwordReg" type="password" class="form-control" placeholder="Password" required>
-                      <input v-model="confirmReg" type="password" class="form-control" placeholder="Confirm Password" required>
-                      <input type="submit" class="btn btn-primary" @click="doRegister">
-                      <p>Already have an account? <a href="#" @click="registerActive = !registerActive, emptyFields = false">Sign in here</a>
-                      </p>
-                    </form>
-                </div>
-              </div>
-          </div>
-
-        </div>
-      </div>
-    </transition>
-  </div>
-<!-- <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <v-card>
-        <v-card-title class="headline grey lighten-2">
-          Vuetify で v-dialog をつかってみる
-        </v-card-title>
-        <v-card-text style="margin: 1rem auto;">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-          閉じる
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div> -->
-  <p>{{msg}}</p>
-  <v-btn elevation="5" @click="currentComponent = 'CorrectAnswersRateMap'">正答率</v-btn>
-  <v-btn elevation="5" @click="currentComponent = 'BookMarkMap'">ブックマーク</v-btn>
-  <CorrectAnswersRateMap v-if="currentComponent === 'CorrectAnswersRateMap'"></CorrectAnswersRateMap>
-  <BookMarkMap v-if="currentComponent === 'BookMarkMap'"></BookMarkMap>
+ 
+  <LoginDialog/>
+  <!-- <v-btn elevation="5" @click="currentComponent = 'CorrectAnswersRateMap'">正答率</v-btn>
+  <v-btn elevation="5" @click="currentComponent = 'BookMarkMap'">ブックマーク</v-btn> -->
+  <WorldMap mapMode='correctAnswersRate'></WorldMap>
 </template>
 
 <script>
-import CorrectAnswersRateMap from '@/components/correctAnswersRateMap.vue'
-import BookMarkMap from '@/components/bookMarkMap.vue'
-import { ref } from 'vue'
-import axios from 'axios';
+import WorldMap from '@/components/worldMap.vue'
 
+import LoginDialog from '@/components/loginDialog.vue'
+//import { ref } from 'vue'
 
 export default {
   name: 'TopPage',
   components: {
-    CorrectAnswersRateMap,
-    BookMarkMap
-  },
-  setup() {
-    const currentComponent = ref("CorrectAnswersRateMap")
-    const isShow = ref(false)
-    const registerActive = ref (false)
-    const email = ref("")
-    const password = ref("")
-    let msg = ref("hello");
-
-    const login = async() => {
-      const params = new URLSearchParams();
-      params.append('email', email.value);
-      params.append('password', password.value);
-      console.log(params);
-      axios.post('http://kubernetes.docker.internal:8888/login',params,)
-      .then(res => {
-          console.log(res);
-          msg.value = res.data.msg;
-          
-      })
-      .catch(error => {
-          console.log(error.response.data.err_msg);
-          msg.value = error.response.data.err_msg;
-      });
-    }
-
-    const dialogToggle = () => {
-      isShow.value = !isShow.value;
-    }
-
-    return {
-      currentComponent,
-      isShow,
-      registerActive,
-      email,
-      password,
-      login,
-      dialogToggle,
-      msg,
-    };
-  }
+    WorldMap,
+    LoginDialog,
+},
+  // setup() {
+  //   const currentComponent = ref("CorrectAnswersRateMap")
+  //   return {
+  //     currentComponent,
+  //   };
+  // }
 };
 </script>
-
-
-<style>
-#dialog {
-
-  color: #2c3e50;
-  margin-top: 16px;
-}
-.dialog {
-  position: absolute;
-  width: 300px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  cursor: move;
-}
-.dialog__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f0f0f0;
-  padding: 8px 16px;
-}
-.dialog__close {
-  cursor: pointer;
-}
-.login {
-  text-align: center;
-  color: #2C3E50;
-  margin-top: 60px;
-}
-
-p {
-   line-height: 1rem;
-}
-
-.card {
-   padding: 20px;
-}
-
-.form-group {
-   input {
-      margin-bottom: 20px;
-   }
-}
-
-.login-page {
-   align-items: center;
-   display: flex;
-   height: 100vh;
- 
-   h1 {
-      margin-bottom: 1.5rem;
-   }
-}
-</style>
