@@ -14,7 +14,7 @@ export default {
     mapMode: String,
   },
 
-  setup () {
+  setup (props) {
     let data;
     
     axios.get('http://localhost:8888/map')
