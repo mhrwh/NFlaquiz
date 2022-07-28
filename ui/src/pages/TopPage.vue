@@ -5,10 +5,10 @@
       >dialog</button
     >
     <transition>
-      <div class="dialog"  v-if="isShow" > 
+      <div class="dialog"  v-drag v-if="isShow" > 
         <div class="container">
           <div class="row">
-              <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
+              <div class="col-lg-auto col-md-auto col-sm-auto mx-auto" style="padding: 0;">
                 <div v-if="!registerActive" class="card login" v-bind:class="{ error: emptyFields }">
                     <h1>Sign In</h1>
                     <form class="form-group" @submit.prevent="login">
@@ -78,6 +78,7 @@ import BookMarkMap from '@/components/bookMarkMap.vue'
 import { ref } from 'vue'
 import axios from 'axios';
 
+
 export default {
   name: 'TopPage',
   components: {
@@ -87,7 +88,7 @@ export default {
   setup() {
     const currentComponent = ref("CorrectAnswersRateMap")
     const isShow = ref(false)
-    const registerActive = ref (true)
+    const registerActive = ref (false)
     const email = ref("")
     const password = ref("")
     let msg = ref("hello");
@@ -136,12 +137,9 @@ export default {
 }
 .dialog {
   position: absolute;
-  width: 420px;
+  width: 300px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  z-index: 99999;
-  border-radius: 2px;
-  border: 1px solid #f0f0f0;
   cursor: move;
 }
 .dialog__header {
