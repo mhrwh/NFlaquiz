@@ -1,5 +1,13 @@
 <template>
-  <div id="svgMap"></div>
+  <div id="svgMap" style="position: relative;">
+    
+    <LoginDialog></LoginDialog>
+  </div>
+  <Slide>
+      <a href="#" onclick="">
+        <span>クイズ</span>
+      </a>
+  </Slide>
 </template>
 
 <script>
@@ -7,11 +15,19 @@ import mapData from "../data/mapData";
 import axios from 'axios';
 import svgMap from 'svgmap';
 import 'svgmap/dist/svgMap.min.css';
+import { Slide } from "vue3-burger-menu";
+import LoginDialog from '@/components/loginDialog.vue';
+
 export default {
   name: 'WorldMap',
 
   props: {
     mapMode: String,
+  },
+
+  components: {
+    Slide,
+    LoginDialog,
   },
 
   setup (props) {

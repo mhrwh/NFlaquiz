@@ -1,6 +1,6 @@
 <template>
     
-    <button @click="isShow = ! isShow">ログイン</button>
+    <button class="btn btn-primary" type="button" @click="isShow = ! isShow"  style="position: absolute; right: 0px; z-index: 10">ログイン</button>
     <transition>
       <div class="dialog"  v-if="isShow" > 
         <div class="container">
@@ -80,13 +80,15 @@ export default {
 
 <style>
 #dialog {
-
   color: #2c3e50;
   margin-top: 16px;
 }
 .dialog {
   position: absolute;
   width: 300px;
+  top: 50px;
+  right: 0px;
+  z-index: 10;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   cursor: move;
