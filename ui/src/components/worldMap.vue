@@ -1,6 +1,6 @@
 <template>
   <div id="svgMap" style="position: relative;">
-    
+    <QuizFillter></QuizFillter>
     <LoginDialog></LoginDialog>
   </div>
   <Slide>
@@ -17,6 +17,7 @@ import svgMap from 'svgmap';
 import 'svgmap/dist/svgMap.min.css';
 import { Slide } from "vue3-burger-menu";
 import LoginDialog from '@/components/loginDialog.vue';
+import QuizFillter from "./quizFillter.vue";
 
 export default {
   name: 'WorldMap',
@@ -28,6 +29,7 @@ export default {
   components: {
     Slide,
     LoginDialog,
+    QuizFillter
   },
 
   setup (props) {
