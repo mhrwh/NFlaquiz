@@ -6,27 +6,56 @@
         <div class="container">
           <div class="row">
               <div class="col" style="padding: 0;">
-                <div v-if="!registerActive" class="card login" v-bind:class="{ error: emptyFields }">
-                    <h1>Sign In</h1>
-                    <form class="form-group">
-                      <input v-model="email" type="email"  placeholder="Email" required>
-                      <input v-model="password" type="password" class="form-control" placeholder="Password" required>
-                      <input type="submit" class="btn btn-primary" @click="login">
-                      <p>{{email}}{{password}}</p>
-                      <a href="#" @click="registerActive = !registerActive, emptyFields = false">アカウント登録</a>
+                <div v-if="!registerActive" class="card" v-bind:class="{ error: emptyFields }">
+                  <article class="card-body">
+                    <button type="button" class="float-right close" aria-label="Close" @click="isShow = ! isShow">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="card-title mb-4 mt-1">Sign in</h4>
+                    <form>
+                      <div class="form-group">
+                        <label>メールアドレス</label>
+                        <input v-model="email" type="email" class="form-control" placeholder="Email" required>
+                      </div> 
+                      <div class="form-group">
+                        <label>パスワード</label>
+                        <input v-model="password" type="password" class="form-control" placeholder="Password" required>
+                      </div> 
+                      <div class="form-group">
+                        <input type="submit" class="btn btn-primary" @click="login">
+                        <br/>
+                        <a href="#" @click="registerActive = !registerActive, emptyFields = false">アカウント登録</a>
+                      </div>
                     </form>
-                </div>
+                  </article>
+                </div> 
 
-                <div v-else class="card register" v-bind:class="{ error: emptyFields }">
-                    <h1>Sign Up</h1>
-                    <form class="form-group">
-                      <input v-model="emailReg" type="email" class="form-control" placeholder="Email" required>
-                      <input v-model="passwordReg" type="password" class="form-control" placeholder="Password" required>
-                      <input v-model="confirmReg" type="password" class="form-control" placeholder="Confirm Password" required>
-                      <input type="submit" class="btn btn-primary" @click="doRegister">
-                      <p>Already have an account? <a href="#" @click="registerActive = !registerActive, emptyFields = false">Sign in here</a>
-                      </p>
+                <div v-else class="card" v-bind:class="{ error: emptyFields }">
+                  <article class="card-body">
+                    <button type="button" class="float-right close" aria-label="Close" @click="isShow = ! isShow">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="card-title mb-4 mt-1">Sign up</h4>
+                    <form>
+                      <div class="form-group">
+                        <label>メールアドレス</label>
+                        <input v-model="email" type="email" class="form-control" placeholder="Email" required>
+                      </div> 
+                      <div class="form-group">
+                        <label>パスワード</label>
+                        <input v-model="password" type="password" class="form-control" placeholder="Password" required>
+                      </div> 
+                      <div class="form-group">
+                        <label>パスワード(確認)</label>
+                        <input v-model="password" type="password" class="form-control" placeholder="Password" required>
+                      </div> 
+                      <div class="form-group">
+                        <input type="submit" class="btn btn-primary" >
+                        <br/>
+                        <a href="#" @click="registerActive = !registerActive, emptyFields = false">Sign In</a>
+                      </div>
                     </form>
+                  </article>
                 </div>
               </div>
           </div>
@@ -85,13 +114,13 @@ export default {
 }
 .dialog {
   position: absolute;
-  width: 300px;
+  width: auto;
+  height: auto;
   top: 50px;
   right: 0px;
   z-index: 10;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  cursor: move;
 }
 .dialog__header {
   display: flex;
