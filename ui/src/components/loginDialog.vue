@@ -67,12 +67,14 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios';
+import axios from 'axios'
+import { useStore } from 'vuex'
 
 export default {
   name: 'LoginDialog',
 
   setup() {
+    const store = useStore()
     const isShow = ref(false)
     const registerActive = ref (false)
     const email = ref("")
@@ -83,11 +85,11 @@ export default {
       params.append('email', email.value);
       params.append('password', password.value);
       console.log(params);
-      axios.post('http://kubernetes.docker.internal:8888/login',params,)
+      axios.post('http://localhost:8888/login',params,)
       .then(res => {
           console.log(res);
           //msg.value = res.data.msg;
-          
+          store.dispatch("setAuth", true)
       })
       .catch(error => {
           console.log(error.response.data.err_msg);
