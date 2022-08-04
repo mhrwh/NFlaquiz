@@ -1,7 +1,8 @@
 <template>
   <div id="svgMap" style="position: relative;">
     <QuizFillter></QuizFillter>
-    <LoginDialog></LoginDialog>
+    <LoginDialog v-if="!auth"></LoginDialog>
+    <UserInfoDialog v-if="auth"></UserInfoDialog>
   </div>
   <Slide>
       <a href="#" onclick="">
@@ -13,10 +14,13 @@
 <script>
 import mapData from "../data/mapData";
 import axios from 'axios';
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import svgMap from 'svgmap';
 import 'svgmap/dist/svgMap.min.css';
 import { Slide } from "vue3-burger-menu";
 import LoginDialog from '@/components/loginDialog.vue';
+import UserInfoDialog from '@/components/userInfoDialog.vue';
 import QuizFillter from "./quizFillter.vue";
 
 export default {
@@ -29,10 +33,13 @@ export default {
   components: {
     Slide,
     LoginDialog,
-    QuizFillter
-  },
+    UserInfoDialog,
+    QuizFillter,
+},
 
   setup (props) {
+    const store = useStore()
+    const auth = computed(() => store.state.auth)
     let data;
     
     axios.get('http://localhost:8888/map')
@@ -76,6 +83,9 @@ export default {
           countryNames: jpName
         });
       }))
+      return {
+        auth
+      }
   }
 }
 </script>
