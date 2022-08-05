@@ -119,28 +119,30 @@ export default {
 
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
-      if (!bookmark.value&&!areas.value[0]&&!colors.value[0]){
+      if (!colors.value[0]){
         console.log('a')
-        url += 'colors[]=red&colors[]=orange&colors[]=yellow&colors[]=green&colors[]=blue&colors[]=white&colors[]=black&areas[]=Asia&areas[]=Oceania&areas[]=NorthAmerica&areas[]=LatinAmericaandCaribbean&areas[]=Europe&areas[]=MiddleEast&areas[]=Africa&bookmark=0';
-      }
-      else{
+        url += 'colors[]=red&colors[]=orange&colors[]=yellow&colors[]=green&colors[]=blue&colors[]=white&colors[]=black&';
+      } else{
         for(let i=0; i<colors.value.length; i++){
           url = url + 'colors[]=' + colors.value[i] + `&`;
         }
+      }
+      if (!areas.value[0]){
+        url += 'areas[]=Asia&areas[]=Oceania&areas[]=NorthAmerica&areas[]=LatinAmericaandCaribbean&areas[]=Europe&areas[]=MiddleEast&areas[]=Africa&';
+      } else{
         for(let i=0; i<areas.value.length; i++){
           url = url + 'areas[]=' + areas.value[i] + `&`;
         }
-        if (bookmark.value){
-          url += 'bookmark=1'
-        }
-        else{
-          url += 'bookmark=0'
-        }
+      }
+      if (bookmark.value){
+        url += 'bookmark=1'
+      } else{
+        url += 'bookmark=0'
       }
       console.log(url)
       axios.get(url)
       .then(res => {
-          console.log(res);
+          console.log(res.data.quizzes);
           //msg.value = res.data.msg;
       })
       .catch(error => {
