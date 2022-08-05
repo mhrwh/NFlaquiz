@@ -38,8 +38,8 @@ export default {
 },
 
   setup (props) {
-    const store = useStore()
-    const auth = computed(() => store.state.auth)
+    const store = useStore();
+    const auth = computed(() => store.state.auth);
     let data;
     
     axios.get('http://localhost:8888/map')

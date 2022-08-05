@@ -80,10 +80,9 @@
                 <input id="btn_black" type="checkbox"  value="black" v-model="colors">
                 <label for="btn_black"></label>
               </div>
-              
             </div>
           </div>
-          <div class="row">
+          <div class="row" v-if="auth">
             <div class="col">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="bookmark" v-model="bookmark">
@@ -106,16 +105,20 @@
 <script>
 import { ref } from 'vue'
 import axios from 'axios'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name: 'QuizFillter',
 
   setup() {
-    const isShow = ref(true)
-    const bookmark = ref(false)
-    const areas = ref([])
-    const colors = ref([])
-    let url = ''
+    const isShow = ref(true);
+    const bookmark = ref(false);
+    const areas = ref([]);
+    const colors = ref([]);
+    let url = '';
+    const store = useStore();
+    const auth = computed(() => store.state.auth);
 
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
@@ -158,6 +161,7 @@ export default {
       colors,
       quiz,
       url,
+      auth,
     };
   }
 };
