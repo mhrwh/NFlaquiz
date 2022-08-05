@@ -1,10 +1,10 @@
 <template>
     <transition>
-      <div class="quiz-fillter"  v-if="isShow" > 
+      <div class="quiz-fillter" v-if="quizDialog" > 
         <div class="container">
           <div class="row">
               <div class="col" >
-                <button type="button" class="float-right close" aria-label="Close" @click="isShow = ! isShow">
+                <button type="button" class="float-right close" aria-label="Close" @click="close">
                   <span aria-hidden="true">&times;</span>
                 </button>
                 <h3>国旗クイズ</h3>
@@ -112,7 +112,7 @@ export default {
   name: 'QuizFillter',
 
   setup() {
-    const isShow = ref(true);
+    const quizDialog = computed(() => store.state.quizDialog);
     const bookmark = ref(false);
     const areas = ref([]);
     const colors = ref([]);
@@ -120,6 +120,9 @@ export default {
     const store = useStore();
     const auth = computed(() => store.state.auth);
 
+    const close = () =>{
+      store.dispatch("setQuizDialog", false);
+    }
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
       if (!colors.value[0]){
@@ -155,13 +158,14 @@ export default {
     }
 
     return {
-      isShow,
       bookmark,
       areas,
       colors,
       quiz,
       url,
       auth,
+      quizDialog,
+      close,
     };
   }
 };

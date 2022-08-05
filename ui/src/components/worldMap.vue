@@ -5,7 +5,7 @@
     <UserInfoDialog v-if="auth"></UserInfoDialog>
   </div>
   <Slide>
-      <a href="#" onclick="">
+      <a href="#" @click="openQuizDialog">
         <span>クイズ</span>
       </a>
   </Slide>
@@ -41,6 +41,10 @@ export default {
     const store = useStore();
     const auth = computed(() => store.state.auth);
     let data;
+
+    const openQuizDialog = () =>{
+      store.dispatch("setQuizDialog", true);
+    }
     
     axios.get('http://localhost:8888/map')
       .then((res =>{
@@ -84,7 +88,8 @@ export default {
         });
       }))
       return {
-        auth
+        auth,
+        openQuizDialog,
       }
   }
 }
