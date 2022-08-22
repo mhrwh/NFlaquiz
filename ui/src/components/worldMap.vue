@@ -1,5 +1,5 @@
 <template>
-  <div id="svgMap" style="position: relative;">
+  <div id="svgMap">
   </div>
 </template>
 
