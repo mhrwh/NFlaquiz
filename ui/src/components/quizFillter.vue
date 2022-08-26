@@ -1,105 +1,113 @@
 <template>
-    <transition>
-      <div class="quiz-fillter" v-if="quizDialog" > 
-        <div class="container">
-          <div class="row">
-              <div class="col" >
-                <button type="button" class="float-right close" aria-label="Close" @click="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h3>国旗クイズ</h3>
-                
-              </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              地域
-            </div>
-            <div class="col" style="padding: 0;">
-              <div class="btn_wrap">
-                <input id="btn_asia" type="checkbox"  value="Asia" v-model="areas">
-                <label for="btn_asia">アジア</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_oceania" type="checkbox"  value="Oceania" v-model="areas">
-                <label for="btn_oceania">オセアニア</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_northamerica" type="checkbox"  value="NorthAmerica" v-model="areas">
-                <label for="btn_northamerica">北米</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_latinamericaandcaribbean" type="checkbox"  value="LatinAmericaandCaribbean" v-model="areas">
-                <label for="btn_latinamericaandcaribbean">中南米</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_europe" type="checkbox"  value="Europe" v-model="areas">
-                <label for="btn_europe">ヨーロッパ</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_middleeast" type="checkbox"  value="Middleeast" v-model="areas">
-                <label for="btn_middleeast">中東</label>
-              </div>
-              <div class="btn_wrap">
-                <input id="btn_africa" type="checkbox"  value="Africa" v-model="areas">
-                <label for="btn_africa">アフリカ</label>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalCenterTitle">国旗クイズ</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <h5>絞り込み条件</h5>
               </div>
             </div>
-            
-          </div>
-          <div class="row">
-            <div class="col">
-              色
-            </div>
-            <div class="col" style="padding: 0;">
-              <div class="btn_color_wrap" id="red">
-                <input id="btn_red" type="checkbox"  value="red" v-model="colors">
-                <label for="btn_red"></label>
-              </div>
-              <div class="btn_color_wrap" id="orange">
-                <input id="btn_orange" type="checkbox"  value="orange" v-model="colors">
-                <label for="btn_orange"></label>
-              </div>
-              <div class="btn_color_wrap" id="yellow">
-                <input id="btn_yellow" type="checkbox"  value="yellow" v-model="colors">
-                <label for="btn_yellow"></label>
-              </div>
-              <div class="btn_color_wrap" id="green">
-                <input id="btn_green" type="checkbox"  value="green" v-model="colors">
-                <label for="btn_green"></label>
-              </div>
-              <div class="btn_color_wrap" id="blue">
-                <input id="btn_blue" type="checkbox"  value="blue" v-model="colors">
-                <label for="btn_blue"></label>
-              </div>
-              <div class="btn_color_wrap" id="white">
-                <input id="btn_white" type="checkbox"  value="white" v-model="colors">
-                <label for="btn_white"></label>
-              </div>
-              <div class="btn_color_wrap" id="black">
-                <input id="btn_black" type="checkbox"  value="black" v-model="colors">
-                <label for="btn_black"></label>
+            <div class="row" style="margin-top: 5px;">
+              <div class="col-md-3">
+                地域
               </div>
             </div>
-          </div>
-          <div class="row" v-if="auth">
-            <div class="col">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="bookmark" v-model="bookmark">
-                <label class="form-check-label" for="bookmark">
-                  ブックマークで絞り込む
-                </label>
+            <div class="row">
+              <div class="col" style="padding: 0; left: 15px;">
+                <div class="btn_wrap">
+                  <input id="btn_asia" type="checkbox"  value="Asia" v-model="areas">
+                  <label for="btn_asia">アジア</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_oceania" type="checkbox"  value="Oceania" v-model="areas">
+                  <label for="btn_oceania">オセアニア</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_northamerica" type="checkbox"  value="NorthAmerica" v-model="areas">
+                  <label for="btn_northamerica">北米</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_latinamericaandcaribbean" type="checkbox"  value="LatinAmericaandCaribbean" v-model="areas">
+                  <label for="btn_latinamericaandcaribbean">中南米</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_europe" type="checkbox"  value="Europe" v-model="areas">
+                  <label for="btn_europe">ヨーロッパ</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_middleeast" type="checkbox"  value="Middleeast" v-model="areas">
+                  <label for="btn_middleeast">中東</label>
+                </div>
+                <div class="btn_wrap">
+                  <input id="btn_africa" type="checkbox"  value="Africa" v-model="areas">
+                  <label for="btn_africa">アフリカ</label>
+                </div>
+              </div> 
+            </div>
+            <div class="row" style="margin-top: 5px;">
+              <div class="col-sm-3">
+                色
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <input class="btn btn-primary" type="submit" value="スタート" @click="quiz">
+            <div class="row">
+              <div class="col" style="padding: 0; left: 15px;">
+                <div class="btn_color_wrap" id="red">
+                  <input id="btn_red" type="checkbox" value="red" v-model="colors">
+                  <label for="btn_red"></label>
+                </div>
+                <div class="btn_color_wrap" id="orange">
+                  <input id="btn_orange" type="checkbox" value="orange" v-model="colors">
+                  <label for="btn_orange"></label>
+                </div>
+                <div class="btn_color_wrap" id="yellow">
+                  <input id="btn_yellow" type="checkbox" value="yellow" v-model="colors">
+                  <label for="btn_yellow"></label>
+                </div>
+                <div class="btn_color_wrap" id="green">
+                  <input id="btn_green" type="checkbox" value="green" v-model="colors">
+                  <label for="btn_green"></label>
+                </div>
+                <div class="btn_color_wrap" id="blue">
+                  <input id="btn_blue" type="checkbox" value="blue" v-model="colors">
+                  <label for="btn_blue"></label>
+                </div>
+                <div class="btn_color_wrap" id="white">
+                  <input id="btn_white" type="checkbox" value="white" v-model="colors">
+                  <label for="btn_white"></label>
+                </div>
+                <div class="btn_color_wrap" id="black">
+                  <input id="btn_black" type="checkbox" value="black" v-model="colors">
+                  <label for="btn_black"></label>
+                </div>
+              </div>
+            </div>
+            <div class="row" v-if="auth">
+              <div class="col">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="bookmark" v-model="bookmark">
+                  <label class="form-check-label" for="bookmark">
+                    ブックマークで絞り込む
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="reset">リセット</button>
+          <button type="button" class="btn btn-primary" @click="quiz">スタート</button>
+        </div>
       </div>
-    </transition>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -114,14 +122,19 @@ export default {
   setup() {
     const quizDialog = computed(() => store.state.quizDialog);
     const bookmark = ref(false);
-    const areas = ref([]);
-    const colors = ref([]);
+    let areas = ref([]);
+    let colors = ref([]);
     let url = '';
     const store = useStore();
     const auth = computed(() => store.state.auth);
 
     const close = () =>{
       store.dispatch("setQuizDialog", false);
+    }
+    const reset = () =>{
+      areas.value.splice(0);
+      colors.value.splice(0);
+      console.log(areas);
     }
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
@@ -166,6 +179,7 @@ export default {
       auth,
       quizDialog,
       close,
+      reset,
     };
   }
 };
@@ -223,82 +237,83 @@ export default {
   left: 0;
 }
 .btn_color_wrap label{
-  padding: 20px 20px;
-  border-radius: 20px;
-  background: #eee;
-  display: inline-block;
+  display: none;
   cursor: pointer;
-  transition: .5s;
+  display: inline-block;
+  position: relative;
+  padding: 25px;
 }
-#red label{
-  border: 2px solid #f00;
+.btn_color_wrap label::before{
+  content: "";
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  left: 0;
+  top: 50%;
+  border: 1px solid;
+  border-color:  #d3d3d3; /* 枠の色変更 お好きな色を */
 }
-#red input:checked + label{
-  background: #f00;
-  border: 1px solid #fff;
+/* チェックが入った時のレ点 */
+.btn_color_wrap input:checked+label::after{
+  content: "";
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  width: 18px;
+  height: 9px;
+  margin-top: -9px;
+  top: 50%;
+  left: 10px;
+  transform: rotate(-45deg);
+  border-bottom: 3px solid;
+  border-left: 3px solid;
 }
-#red input:focus + label{
-  box-shadow: 0 0 4px #f00;
+
+#red label::before{
+  background-color: #f00;
 }
-#orange label{
-  border: 2px solid #ffa500;
+#red input:checked + label::after{
+  border-color:  #fff;
 }
-#orange input:checked + label{
-  background: #ffa500;
-  border: 1px solid #fff;
+#orange label::before{
+  background-color: #ffa500;
 }
-#orange input:focus + label{
-  box-shadow: 0 0 4px #ffa500;
+#orange input:checked + label::after{
+  border-color:  #000;
 }
-#yellow label{
-  border: 2px solid #ff0;
+#yellow label::before{
+  background-color: #ff0;
 }
-#yellow input:checked + label{
-  background: #ff0;
-  border: 1px solid #fff;
+#yellow input:checked + label::after{
+  border-color:  #000;
 }
-#yellow input:focus + label{
-  box-shadow: 0 0 4px #ff0;
+#green label::before{
+  background-color: #008000;
 }
-#green label{
-  border: 2px solid #008000;
+#green input:checked + label::after{
+  border-color:  #fff;
 }
-#green input:checked + label{
-  background: #008000;
-  border: 1px solid #fff;
+#blue label::before{
+  background-color: #00f;
 }
-#green input:focus + label{
-  box-shadow: 0 0 4px #008000;
+#blue input:checked + label::after{
+  border-color:  #fff;
 }
-#blue label{
-  border: 2px solid #00f;
+#white label::before{
+  background-color: #fff;
 }
-#blue input:checked + label{
-  background: #00f;
-  border: 1px solid #fff;
+#white input:checked + label::after{
+  border-color:  #000;
 }
-#blue input:focus + label{
-  box-shadow: 0 0 4px #00f;
+#black label::before{
+  background-color: #000;
 }
-#white label{
-  border: 2px solid #fff;
+#black input:checked + label::after{
+  border-color:  #fff;
 }
-#white input:checked + label{
-  background: #fff;
-  border: 1px solid #fff;
-}
-#white input:focus + label{
-  box-shadow: 0 0 4px #fff;
-}
-#black label{
-  border: 2px solid #000;
-}
-#black input:checked + label{
-  background: #000;
-  border: 1px solid #fff;
-}
-#black input:focus + label{
-  box-shadow: 0 0 4px #000;
-}
+
 
 </style>
