@@ -1,10 +1,7 @@
 <template>
   <div id="svgMap" style="position: relative;">
     <QuizFillter></QuizFillter>
-    <LoginDialog v-if="!auth"></LoginDialog>
-    <UserInfoDialog v-if="auth"></UserInfoDialog>
-  </div>
-  <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+    <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
   <label for="openSidebarMenu" class="sidebarIconToggle">
     <div class="spinner diagonal part-1"></div>
     <div class="spinner horizontal"></div>
@@ -16,6 +13,10 @@
       <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter">quiz</a></li>
     </ul>
   </div>
+    <LoginDialog v-if="!auth"></LoginDialog>
+    <UserInfoDialog v-if="auth"></UserInfoDialog>
+  </div>
+  
   
 </template>
 
@@ -102,6 +103,7 @@ export default {
     position: fixed;
     left: 0;
     width: 250px;
+    z-index: 10;
     transform: translateX(-250px);
     transition: transform 250ms ease-in-out;
     background: #fff;
