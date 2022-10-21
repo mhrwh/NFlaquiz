@@ -41,6 +41,25 @@ docker-compose stop
 docker-compose exec コンテナ名 sh
 ```
 
+docker-compose.ymlの内容を変更後，dbのボリュームが変更後のバージョンとコンフリクトするのを防ぐためにボリュームを削除する
+
+
+ボリューム一覧 (voloume list)
+```
+docker volume ls
+```
+
+ボリュームの削除 (Delete volume)
+```
+docker volume rm "project_db-data"
+```
+
+volumeの全削除 (Delete all volumes)
+```
+docker volume rm $(docker volume ls -qf dangling=true)
+```
+
+
 ブラウザでアクセス (Access with a browser)
 ```
 lcalhost:ポート番号
