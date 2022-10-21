@@ -54,7 +54,7 @@ docker volume ls
 docker volume rm "project_db-data"
 ```
 
-volumeの全削除 (Delete all volumes)
+ボリュームの全削除 (Delete all volumes)
 ```
 docker volume rm $(docker volume ls -qf dangling=true)
 ```
