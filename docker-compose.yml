@@ -24,8 +24,7 @@ services:
       - ./.env
     depends_on:
       - db
-    tty:
-      true
+    tty: true
     volumes:
       - ./api:/go/src/api
 
@@ -34,16 +33,15 @@ services:
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
-    platform: linux/x86_64
     tty: true
     ports:
       - 3306:3306
     env_file:
       - ./.env
     volumes:
-    - mysql-data-volume:/var/lib/mysql
-    - ./docker/mysql/my.conf:/etc/mysql/my.conf
-    - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - mysql-data-volume:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
 
   phpmyadmin:
     container_name: phpmyadmin
