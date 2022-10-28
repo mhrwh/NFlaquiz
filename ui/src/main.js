@@ -22,3 +22,4 @@ createApp(App)
     // global configuration
   })
   .mount('#app')
+
