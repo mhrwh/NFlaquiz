@@ -5,8 +5,8 @@
     <WorldMap v-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
     <div id="login">
       
-      <v-btn elevation="5" @click="mapMode = 'correctAnswersRate'">正答率</v-btn>
-      <v-btn elevation="5" @click="mapMode = 'bookMark'">ブックマーク</v-btn>
+      <!-- <v-btn elevation="5" @click="mapMode = 'correctAnswersRate'">正答率</v-btn>
+      <v-btn elevation="5" @click="mapMode = 'bookMark'">ブックマーク</v-btn> -->
     </div>
   </div>
 </template>

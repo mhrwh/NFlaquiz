@@ -1,18 +1,22 @@
 <template>
   <div id="svgMap" style="position: relative;">
     <QuizFillter></QuizFillter>
-    <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
-  <label for="openSidebarMenu" class="sidebarIconToggle">
-    <div class="spinner diagonal part-1"></div>
-    <div class="spinner horizontal"></div>
-    <div class="spinner diagonal part-2"></div>
-  </label>
-  <div id="sidebarMenu">
-    <ul class="sidebarMenuInner">
-      <li></li>
-      <li><a href="#" data-toggle="modal" data-target="#exampleModalCenter">quiz</a></li>
-    </ul>
-  </div>
+    <div class="btn-toolbar" role="toolbar">
+      <div class="btn-group mr-2" role="group">
+        <button class="btn btn-light btn-circle m-1" style="border-radius: 50%"><i class="bi bi-person-fill"></i></button>
+        <!-- <LoginDialog v-if="!auth"></LoginDialog>
+        <UserInfoDialog v-if="auth"></UserInfoDialog> -->
+      </div>
+      <div class="btn-group mr-2" role="group">
+        <button class="btn btn-light btn-circle m-1" style="border-radius: 50%"><i class="bi bi-layout-sidebar-inset-reverse"></i></button>
+      </div>
+      <div class="btn-group mr-2" role="group">
+        <button class="btn btn-light btn-circle m-1" data-toggle="modal" data-target="#exampleModalCenter" style="border-radius: 50%"><i class="bi bi-flag-fill"></i></button>
+        <!-- <button type="button" class="bi bi-flag-fill" data-toggle="modal" data-target="#exampleModalCenter">
+        </button> -->
+      </div>
+    </div>
+    
     <LoginDialog v-if="!auth"></LoginDialog>
     <UserInfoDialog v-if="auth"></UserInfoDialog>
   </div>
@@ -87,7 +91,10 @@ export default {
         new svgMap({
           targetElementID: 'svgMap',
           data: mapData,
-          countryNames: jpName
+          countryNames: jpName,
+          colorMax: '#ED6E67',
+          colorMin: '#F3CF85',
+          colorNoData: '#E0DCDB',
         });
       }))
       return {
@@ -98,105 +105,26 @@ export default {
 </script>
 
 <style>
-#sidebarMenu {
-    height: 100%;
-    position: fixed;
-    left: 0;
-    width: 250px;
-    z-index: 10;
-    transform: translateX(-250px);
-    transition: transform 250ms ease-in-out;
-    background: #fff;
+.svgMap-map-wrapper{
+  background: #6B9BA9;
 }
-.sidebarMenuInner{
-    margin:0;
-    padding:0;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
+.btn-toolbar{
+  position: absolute;
+  z-index: 1;
 }
-.sidebarMenuInner li{
-    list-style: none;
-    color: #fff;
-    font-weight: bold;
-    padding: 20px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+.btn-circle {
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  padding: 0;
+  border-radius: 50%;
 }
-/* .sidebarMenuInner li span{
-    display: block;
-    font-size: 14px;
-    color: #fff;
-} */
-.sidebarMenuInner li a{
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
+.btn-circle i {
+  position: relative;
+  top: -1px;
 }
-input[type="checkbox"]:checked ~ #sidebarMenu {
-    transform: translateX(0);
-}
-
-input[type=checkbox] {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    display: none;
-}
-.sidebarIconToggle {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: absolute;
-    z-index: 99;
-    height: 100%;
-    width: 100%;
-    top: 22px;
-    left: 15px;
-    height: 22px;
-    width: 22px;
-}
-.spinner {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: absolute;
-    height: 3px;
-    width: 100%;
-    background-color: #000;
-}
-.horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-.diagonal.part-1 {
-    position: relative;
-    transition: all 0.3s;
-    box-sizing: border-box;
-    float: left;
-}
-.diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    opacity: 0;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(135deg);
-    margin-top: 8px;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(-135deg);
-    margin-top: -9px;
+.bi{
+  color: #FFCF32;
 }
 </style>
