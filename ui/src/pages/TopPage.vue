@@ -1,7 +1,18 @@
 <template>
   <WorldMap v-if="mapMode==='correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
   <WorldMap v-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
+  <AccountModal></AccountModal>
   <div class="btn-toolbar" role="toolbar">
+      <div class="btn-group" role="group">
+        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
+          <i class="bi bi-person-fill"></i>
+          <div class="btn-text">log in</div>
+        </button>
+        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#logoutModal" data-backdrop="false" style="border-radius: 50%" v-if="auth">
+          <i class="bi bi-person-check-fill"></i>
+          <div class="btn-text logout">log out</div>
+        </button>
+      </div>
       <div class="btn-group" role="group" v-if="auth">
         <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'" v-if="mapMode=='correctAnswersRate'">
           <i class="bi bi-layout-sidebar-inset"></i>
@@ -16,6 +27,7 @@
 </template>
 
 <script>
+import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue'
 import { ref } from 'vue'
 import { computed } from 'vue'
@@ -25,6 +37,7 @@ export default {
   name: 'TopPage',
   components: {
     WorldMap,
+    AccountModal
 },
   setup() {
     const store = useStore();
@@ -71,5 +84,10 @@ export default {
   margin-top: 14px;
   color: #fff;
   border-bottom: solid 1px #FFCF32;
+}
+.logout{
+  width: calc(100% + 32px);
+  margin: 0 -16px;
+  margin-top: 14px;
 }
 </style>
