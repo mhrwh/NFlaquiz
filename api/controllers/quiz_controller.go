@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -105,9 +104,6 @@ func SelectQuiz(c *gin.Context) {
         Where("quizzes.country_id in (?)", country_array).
         Where("user_id = ?", user.ID).
         Order("weight").Limit(left).Find(&low_weight_quizzes)
-
-      log.Println(quizzes[0])
-      log.Println(low_weight_quizzes)
 
       database.DB.Raw(
 				"(?) UNION (?)",
