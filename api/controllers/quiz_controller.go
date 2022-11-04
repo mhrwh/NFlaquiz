@@ -114,17 +114,15 @@ func UpdateResult(c *gin.Context) {
 	// resultテーブル更新処理
 	for _, v := range req {
 
-		// クイズ結果が登録済みか否か判定
 		var result models.Result
 		query := database.DB.Where("country_id=?", v.CountryID).Where("user_id=?", user.ID).First(&result)
 
+		// 重みは[0.25, 1.0]で正誤により0.25ずつ調整する
 		if errors.Is(query.Error, gorm.ErrRecordNotFound) {
-
-			// 未登録の場合は新規作成
+			// 初回答のクイズの場合はResultを新規作成
 			weight := 1.0
-			// 不正解の場合
 			if v.Answer == 0 {
-				weight = 0.5
+				weight = 0.25
 			}
 			new_result := models.Result{
 				CountryID: v.CountryID,
@@ -132,16 +130,14 @@ func UpdateResult(c *gin.Context) {
 				Weight: weight,
 				Bookmark: v.Bookmark,
 			}
-			log.Println(new_result)
 			database.DB.Create(&new_result)
 
 		} else {
-			// 登録済みの場合はレコードを更新
-			// 重みの更新
+			// 過去に回答したことのあるクイズの場合はResultを更新
 			weight := result.Weight
-			if v.Answer == 1 && result.Weight < 1.0{
+			if v.Answer == 1 && result.Weight <= 0.75{
 				weight += 0.25
-			} else if v.Answer == 0 && result.Weight > 0.25 {
+			} else if v.Answer == 0 && result.Weight >= 0.5 {
 				weight -= 0.25
 			}
 
