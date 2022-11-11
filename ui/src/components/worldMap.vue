@@ -13,15 +13,10 @@ export default {
   props: {
     mapMode: String,
   },
-  components: {
-},
-  setup (props) {
-    let data;
-    
+  setup (props) {    
     axios.get('http://localhost:8888/map')
       .then((res =>{
-        data = res.data;
-        let jpName = {};
+        let data = res.data, jpName = {}, maxColorCode, minColorCode, noDataColorCode;
         for(let i=0; i<data.map_info.length; i++){
           const des = data.map_info[i].description.match(/.{1,25}/g);
           for(let i=0; i<8; i++){
@@ -30,8 +25,14 @@ export default {
           let colorWeight;
           if (props.mapMode == 'correctAnswersRate'){
             colorWeight = data.map_info[i].weight;
+            maxColorCode = '#F28B7C';
+            minColorCode = '#F6D0CF';
+            noDataColorCode = '#F6D0CF';
           }else if (props.mapMode == 'bookMark'){
             colorWeight = data.map_info[i].bookmark;
+            maxColorCode = '#76926A';
+            minColorCode = '#D2DDBF';
+            noDataColorCode = '#D2DDBF';
           }
           let newData = {
             colorWeight : colorWeight * 100, 
@@ -51,7 +52,10 @@ export default {
         new svgMap({
           targetElementID: 'svgMap',
           data: mapData,
-          countryNames: jpName
+          countryNames: jpName,
+          colorMax: maxColorCode,
+          colorMin: minColorCode,
+          colorNoData: noDataColorCode,
         });
       }))
       return {
@@ -59,3 +63,8 @@ export default {
   }
 }
 </script>
+<style>
+.svgMap-map-wrapper {
+  background: #9ABBDF;
+}
+</style>
