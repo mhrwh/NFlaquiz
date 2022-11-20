@@ -76,9 +76,9 @@ export default {
           targetElementID: 'svgMap',
           data: mapData,
           countryNames: jpName,
-          colorMax: '#ED6E67',
-          colorMin: '#F3CF85',
-          colorNoData: '#E0DCDB',
+          colorMax: '#F28B7C',
+          colorMin: '#F6D0CF',
+          colorNoData: '#F6D0CF',
         });
       }))
       return {
@@ -90,7 +90,7 @@ export default {
 
 <style>
 .svgMap-map-wrapper {
-  background: #6B9BA9;
+  background: #9ABBDF;
 }
 
 </style>
