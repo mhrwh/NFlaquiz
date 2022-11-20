@@ -2,7 +2,7 @@
   
     <WorldMap v-if="mapMode==='correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
     <WorldMap v-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
-    <QuizFillter></QuizFillter>
+    <QuizFilter></QuizFilter>
     <div class="btn-toolbar" role="toolbar">
       <div class="btn-group" role="group">
         <button class="btn btn-light btn-circle" style="border-radius: 50%" v-if="!auth">
@@ -28,11 +28,11 @@
         </button>
       </div>
       <div class="btn-group" role="group">
-        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#exampleModalCenter" style="border-radius: 50%">
+        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal" style="border-radius: 50%">
           <i class="bi bi-flag-fill"></i>
           <div class="btn-text">quiz</div>
         </button>
-        <!-- <button type="button" class="bi bi-flag-fill" data-toggle="modal" data-target="#exampleModalCenter">
+        <!-- <button type="button" class="bi bi-flag-fill" data-toggle="modal" data-target="#quizFilterModal">
         </button> -->
       </div>
   </div>
@@ -40,7 +40,7 @@
 
 <script>
 import WorldMap from '@/components/worldMap.vue'
-import QuizFillter from "@/components/quizFillter.vue";
+import QuizFilter from "@/components/quizFilter.vue";
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { ref } from 'vue'
@@ -50,7 +50,7 @@ export default {
   name: 'TopPage',
   components: {
     WorldMap,
-    QuizFillter,
+    QuizFilter,
 },
   setup() {
     const store = useStore();

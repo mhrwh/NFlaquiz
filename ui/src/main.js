@@ -9,6 +9,7 @@ import 'bootstrap/dist/js/bootstrap.min'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import "bootstrap-icons/font/bootstrap-icons.css"
+import "../public/styles/bootstrap-overwrite.css"
 import drag from "v-drag"
 //import { loadFonts } from './plugins/webfontloader'
 axios.defaults.withCredentials = true
