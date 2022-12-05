@@ -1,8 +1,7 @@
 <template>
   <WorldMap v-if="mapMode==='correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
-  <WorldMap v-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
-  <QuizFilter />
-  <AccountModal />
+  <WorldMap v-else-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
+  <AccountModal></AccountModal>
   <div class="btn-toolbar" role="toolbar">
       <div class="btn-group" role="group">
         <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
