@@ -1,7 +1,8 @@
 <template>
   <WorldMap v-if="mapMode==='correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
   <WorldMap v-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
-  <AccountModal></AccountModal>
+  <QuizFilter />
+  <AccountModal />
   <div class="btn-toolbar" role="toolbar">
       <div class="btn-group" role="group">
         <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
@@ -23,12 +24,19 @@
           <div class="btn-text">map</div>
         </button>
       </div>
+      <div class="btn-group" role="group">
+        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal" style="border-radius: 50%">
+          <i class="bi bi-flag-fill"></i>
+          <div class="btn-text">quiz</div>
+        </button>
+      </div>
   </div>
 </template>
 
 <script>
 import AccountModal from '@/components/accountModal.vue';
-import WorldMap from '@/components/worldMap.vue'
+import WorldMap from '@/components/worldMap.vue';
+import QuizFilter from "@/components/quizFilter.vue";
 import { ref } from 'vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -37,7 +45,8 @@ export default {
   name: 'TopPage',
   components: {
     WorldMap,
-    AccountModal
+    AccountModal,
+    QuizFilter,
 },
   setup() {
     const store = useStore();
