@@ -7,6 +7,12 @@ const routes = [
       name: 'TopPage',
       component: TopPage
     },
+    {
+      path: '/quiz',
+      name: 'QuizPage',
+      component: () =>
+        import("../pages/QuizPage.vue"),
+    },
 ]
 
 const router = createRouter({

@@ -129,7 +129,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'QuizFilter',
@@ -140,7 +140,7 @@ export default {
     let colors = ref([]);
     let url = '';
     const store = useStore();
-    // const router = useRouter();
+    const router = useRouter();
     const auth = computed(() => store.state.auth);
 
     const reset = () =>{
@@ -165,7 +165,7 @@ export default {
       axios.get(url)
       .then(res => {
         store.dispatch("setQuizzes", res.data.quizzes);
-        // router.push({name: 'QuizPage',})
+        router.push({name: 'QuizPage',})
       })
       .catch(error => {
         console.log(error.response.data.err_msg);
