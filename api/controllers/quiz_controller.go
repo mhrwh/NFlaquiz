@@ -151,6 +151,7 @@ func SelectQuiz(c *gin.Context) {
     quiz_with_options = append(quiz_with_options, models.QuizWithOption{
       ID: quiz.ID,
       CountryName: quiz.CountryName,
+      CountryID: quiz.CountryID,
       Hint1: quiz.Hint1,
       Hint2: quiz.Hint2,
       Hint3: quiz.Hint3,
