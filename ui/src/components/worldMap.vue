@@ -4,15 +4,17 @@
 </template>
 
 <script>
-import mapData from "../data/mapData"
-import axios from 'axios'
-import svgMap from 'svgmap'
-import 'svgmap/dist/svgMap.min.css'
+import mapData from "../data/mapData";
+import axios from 'axios';
+import svgMap from 'svgmap';
+import 'svgmap/dist/svgMap.min.css';
 export default {
   name: 'WorldMap',
+
   props: {
     mapMode: String,
   },
+
   setup (props) {    
     axios.get('http://localhost:8888/map')
       .then((res =>{
@@ -66,5 +68,6 @@ export default {
 <style>
 .svgMap-map-wrapper {
   background: #9ABBDF;
+  min-height: 100vh;
 }
 </style>
