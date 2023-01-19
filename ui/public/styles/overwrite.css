@@ -291,3 +291,27 @@ button.modal-close {
   border-radius: 32px;
   padding: 15px 38px 20px 18px
 }
+.account-modal-dialog {
+  margin: 45px 105px auto auto;
+}
+.account-modal {
+  border-radius: 12px;
+}
+.account-modal-header{
+  padding: 12px 15px 6px 17px
+}
+.form-control-sm {
+  height: 22px;
+  width: 175px;
+  font-size: 10px;
+  line-height: 22px;
+  border: 1px solid #000;
+  border-radius: 7px;
+}
+.login-form-content {
+  padding: 16px 0 14px;
+}
+.signup-form-content {
+  margin: 0;
+  padding: 9px 0 10px
+}
