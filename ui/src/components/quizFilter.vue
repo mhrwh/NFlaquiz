@@ -129,7 +129,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router;'
+// import { useRouter } from 'vue-router';
 
 export default {
   name: 'QuizFilter',
@@ -165,11 +165,16 @@ export default {
       }
       axios.get(url)
       .then(res => {
-        store.dispatch("setQuizzes", res.data.quizzes);
-        // router.push({name: 'QuizPage',});
+        if (res.data.quizzes.length) {
+          store.dispatch("setQuizzes", res.data.quizzes);
+          //router.push({name: 'QuizPage',});
+        }else {
+          // モーダルの仕様のためモーダル内に書かずalertで対応
+          alert("該当する国が存在しません");
+        }
       })
       .catch(error => {
-        console.log(error.response.data.err_msg);
+        alert(error.response.data.err_msg);
       });
     }
 
