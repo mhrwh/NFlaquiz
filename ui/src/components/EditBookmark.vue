@@ -17,7 +17,6 @@
                   <tbody>
                     <tr v-for="value in bookMarks" :key="value.name">
                       <td>{{ value.name }}</td>
-                      <td>{{ value.bookmark }}</td>
                       <td>
                         <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
                       </td>
@@ -37,18 +36,39 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { ref, onMounted } from 'vue';
+
 export default {
   name: 'EditBookmark',
-  props: {
-    bookMarks: {
-      type: Array,
-      default: () => []
+  setup() {
+    const bookMarks = ref([]);
+    onMounted(() => {
+      axios
+        .get('http://localhost:8888/map')
+        .then((res) => {
+          bookMarks.value = res.data.map_info
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.bookmark === 1);
+          bookMarks.value.sort((a, b) => {
+            return a.name.localeCompare(b.name, 'ja');
+          });
+        });
+    });
+    const deleteBookmark = (id) => {
+      axios
+        .put(`http://localhost:8888/bookmark/${id}`)
+        .then(() => {
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.id !== id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    return {
+      bookMarks,
+      deleteBookmark
     }
   },
-  methods: {
-    deleteBookmark(country_id) {
-      this.$emit('delete-bookmark', country_id);
-    }
-  }
 }
 </script>

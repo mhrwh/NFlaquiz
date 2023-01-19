@@ -3,7 +3,7 @@
   <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
-  <EditBookmark :bookMarks="bookMarks" @delete-bookmark="deleteBookmark" />
+  <EditBookmark />
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group" role="group">
       <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false"
@@ -50,7 +50,7 @@ import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
 import EditBookmark from "@/components/EditBookmark.vue";
 import axios from 'axios';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -74,36 +74,11 @@ export default {
         })
     }
 
-    const bookMarks = ref([]);
-    onMounted(() => {
-      axios
-        .get('http://localhost:8888/map')
-        .then((res) => {
-          bookMarks.value = res.data.map_info
-          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.bookmark === 1);
-          bookMarks.value.sort((a, b) => {
-            return a.name.localeCompare(b.name, 'ja');
-          });
-        });
-    });
-
-    const deleteBookmark = (id) => {
-      axios
-        .put(`http://localhost:8888/bookmark/${id}`)
-        .then(() => {
-          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.id !== id);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
 
     return {
       auth,
       mapMode,
       logout,
-      bookMarks,
-      deleteBookmark
     };
   },
 };
