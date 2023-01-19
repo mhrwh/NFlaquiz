@@ -1,17 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TopPage from '@/pages/TopPage'
-import EditBookmark from '@/pages/EditBookmark'
+// import EditBookmark from '@/component/EditBookmark'
 
 const routes = [
   {
     path: '/',
     name: 'TopPage',
     component: TopPage
-  },
-  {
-    path: '/editbookmark',
-    name: 'EditBookmark',
-    component: EditBookmark
   },
 ]
 

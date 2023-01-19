@@ -3,6 +3,7 @@
   <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
+  <EditBookmark />
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group" role="group">
       <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false"
@@ -28,7 +29,7 @@
         <div class="btn-text">map</div>
       </button>
     </div>
-    <div class="btn-group" role="group" v-if="auth" v-on:click="edit">
+    <div class="btn-group" role="group" v-if="auth" data-toggle="modal" data-target="#editBookmark">
       <button class="btn btn-light btn-circle" style="border-radius: 50%">
         <i class="bi bi-bookmark-heart"></i>
         <div class="btn-text">bookmark</div>
@@ -48,6 +49,7 @@
 import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
+import EditBookmark from "@/components/EditBookmark.vue";
 import { ref } from 'vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -58,6 +60,7 @@ export default {
     WorldMap,
     AccountModal,
     QuizFilter,
+    EditBookmark,
   },
   methods: {
     edit() {
