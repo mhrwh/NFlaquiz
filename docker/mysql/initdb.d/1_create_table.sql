@@ -40,7 +40,7 @@ CREATE TABLE flag_colors
 CREATE TABLE quizzes
 (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
-  hiragana VARCHAR(30),
+  country_name VARCHAR(30),
   country_id VARCHAR(2),
   hint1 VARCHAR(50),
   hint2 VARCHAR(50),
