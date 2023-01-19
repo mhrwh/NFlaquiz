@@ -124,7 +124,7 @@
           </div>
         </div>
         <div class="modal-footer p-0 border-top-0">
-          <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length)">リセット</button>
+          <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
           <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
         </div>
       </div>
@@ -155,6 +155,7 @@ export default {
     const reset = () =>{
       areas.value.splice(0);
       colors.value.splice(0);
+      bookmark.value = false;
     }
     
     const quiz = async() => {
