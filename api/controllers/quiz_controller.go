@@ -1,8 +1,11 @@
 package controllers
 
 import (
+  "time"
+  "sort"
 	"net/http"
 	"strconv"
+  "math/rand"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/gin-gonic/gin"
@@ -113,5 +116,35 @@ func SelectQuiz(c *gin.Context) {
     }
   }
 
-  c.JSON(http.StatusOK, gin.H{"quizzes": quizzes})
+  // 選択肢の生成
+  database.DB.Find(&countries)
+  rand.Seed(time.Now().UnixNano())
+  var country_names []string
+  var name_options [][]string
+
+  for _, country := range countries {
+    country_names = append(country_names, country.Name)
+  }
+
+  for i := 0; i < len(quizzes); i++ {
+    var tmp []string = []string{quizzes[i].CountryName}
+
+    for j := 0; j < 3; j++ {
+      for {
+        var country_name = country_names[rand.Intn(len(country_names))]
+        if utils.Contains(tmp, country_name) == false {
+          tmp = append(tmp, country_name)
+          break
+        }
+      }
+    }
+
+    sort.Slice(tmp, func(i, j int) bool {
+      return tmp[i] < tmp[j]
+    })
+
+    name_options = append(name_options, tmp)
+  }
+
+  c.JSON(http.StatusOK, gin.H{"quizzes": quizzes, "options": name_options})
 }
