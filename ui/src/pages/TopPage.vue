@@ -3,7 +3,7 @@
   <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
-  <EditBookmark />
+  <EditBookmark :bookMarks="bookMarks" @delete-bookmark="deleteBookmark" />
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group" role="group">
       <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false"
@@ -87,11 +87,23 @@ export default {
         });
     });
 
+    const deleteBookmark = (id) => {
+      axios
+        .put(`http://localhost:8888/bookmark/${id}`)
+        .then(() => {
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.id !== id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
     return {
       auth,
       mapMode,
       logout,
       bookMarks,
+      deleteBookmark
     };
   },
 };
