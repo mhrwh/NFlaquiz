@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -30,9 +29,6 @@ func GetMapInfo(c *gin.Context) {
 		// 結果を持たない国
 		// Bookmark, Weightに0を代入
 		query2 := database.DB.Table("countries").Select("countries.id, countries.name, countries.description, 0, 0").Joins("left outer join results on countries.id = results.country_id").Where("countries.id not in (?)", database.DB.Table("results").Select("country_id").Where("user_id=?", user.ID)).Scan(&mapInfo2)
-
-		log.Println("---")
-		log.Println(mapInfo2)
 
 		database.DB.Raw(
 			"? UNION ?",

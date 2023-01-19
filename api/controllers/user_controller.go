@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -73,7 +72,6 @@ func Login(c *gin.Context) {
 // ログアウト
 // 返り値：ログアウト完了のメッセージ
 func Logout(c *gin.Context) {
-	log.Println(c.Cookie("jwt"))
 	c.SetCookie("jwt", "", 3600, "/", "localhost", true, true)
 	c.JSON(http.StatusOK, gin.H{"msg": "ログアウトしました"})
 }

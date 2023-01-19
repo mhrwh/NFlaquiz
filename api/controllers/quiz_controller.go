@@ -1,14 +1,19 @@
 package controllers
 
 import (
+  "time"
+  "sort"
+	"errors"
 	"net/http"
 	"strconv"
+  "math/rand"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/raylicola/NFlaquiz/database"
 	"github.com/raylicola/NFlaquiz/models"
 	"github.com/raylicola/NFlaquiz/utils"
+	"gorm.io/gorm"
 )
 
 // 検索条件に当てはまるクイズを10問選ぶ
@@ -113,5 +118,113 @@ func SelectQuiz(c *gin.Context) {
     }
   }
 
-  c.JSON(http.StatusOK, gin.H{"quizzes": quizzes})
+  // 選択肢の生成
+  database.DB.Find(&countries)
+  rand.Seed(time.Now().UnixNano())
+  var country_names []string
+  var name_options [][]string
+
+  for _, country := range countries {
+    country_names = append(country_names, country.Name)
+  }
+
+  for i := 0; i < len(quizzes); i++ {
+    var tmp []string = []string{quizzes[i].CountryName}
+
+    for j := 0; j < 3; j++ {
+      for {
+        var country_name = country_names[rand.Intn(len(country_names))]
+        if utils.Contains(tmp, country_name) == false {
+          tmp = append(tmp, country_name)
+          break
+        }
+      }
+    }
+
+    sort.Slice(tmp, func(i, j int) bool {
+      return tmp[i] < tmp[j]
+    })
+
+    name_options = append(name_options, tmp)
+  }
+
+  var quiz_with_options []models.QuizWithOption
+  for  i, quiz := range quizzes {
+    quiz_with_options = append(quiz_with_options, models.QuizWithOption{
+      ID: quiz.ID,
+      CountryName: quiz.CountryName,
+      CountryID: quiz.CountryID,
+      Hint1: quiz.Hint1,
+      Hint2: quiz.Hint2,
+      Hint3: quiz.Hint3,
+      Options: name_options[i],
+    })
+  }
+
+  c.JSON(http.StatusOK, gin.H{"quizzes": quiz_with_options})
+}
+
+// クイズの回答状況をもとにResultを更新する
+// ログインしているときのみ
+// 受信：
+//   [{country_id: 国ID, answer: (0|1), bookmark: (0|1)}, ...]
+//     answer -> 1:正解, 0: 不正解
+//   bookmark -> 1:登録する, 0:しない（既に登録済みであれば変更しない）
+func UpdateResult(c *gin.Context) {
+
+	// データをバインド
+	var req []models.AnswerStatus
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"err_msg": "データのバインドに失敗しました"})
+		return
+	}
+
+	// ユーザーが認証されていない場合
+	user, err := utils.AuthUser(c)
+	if err != nil {
+    c.JSON(http.StatusUnauthorized, gin.H{"err_msg": "認証されていません"})
+		return
+	}
+
+	// resultテーブル更新処理
+	for _, v := range req {
+
+		var result models.Result
+		query := database.DB.Where("country_id=?", v.CountryID).Where("user_id=?", user.ID).First(&result)
+
+		// 重みは[0.25, 1.0]で正誤により0.25ずつ調整する
+		if errors.Is(query.Error, gorm.ErrRecordNotFound) {
+			// 初回答のクイズの場合はResultを新規作成
+			weight := 1.0
+			if v.Answer == 0 {
+				weight = 0.25
+			}
+			new_result := models.Result{
+				CountryID: v.CountryID,
+				UserID: user.ID,
+				Weight: weight,
+				Bookmark: v.Bookmark,
+			}
+			database.DB.Create(&new_result)
+
+		} else {
+			// 過去に回答したことのあるクイズの場合はResultを更新
+			weight := result.Weight
+			if v.Answer == 1 && result.Weight <= 0.75{
+				weight += 0.25
+			} else if v.Answer == 0 && result.Weight >= 0.5 {
+				weight -= 0.25
+			}
+
+			database.DB.Model(&result).Where("user_id=?", user.ID).Where("country_id=?", v.CountryID).Update("weight", weight)
+
+			// ブックマークの更新
+			if v.Bookmark == 1 {
+				database.DB.Model(&result).Where("user_id=?", user.ID).Where("country_id=?", v.CountryID).Update("bookmark", 1)
+			}
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }

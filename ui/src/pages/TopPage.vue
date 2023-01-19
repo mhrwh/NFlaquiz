@@ -4,32 +4,32 @@
   <QuizFilter />
   <AccountModal />
   <div class="btn-toolbar" role="toolbar">
-      <div class="btn-group" role="group">
-        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
-          <i class="bi bi-person-fill"></i>
-          <div class="btn-text">log in</div>
-        </button>
-        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#logoutModal" data-backdrop="false" style="border-radius: 50%" v-if="auth">
-          <i class="bi bi-person-check-fill"></i>
-          <div class="btn-text logout">log out</div>
-        </button>
-      </div>
-      <div class="btn-group" role="group" v-if="auth">
-        <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'" v-if="mapMode=='correctAnswersRate'">
-          <i class="bi bi-layout-sidebar-inset"></i>
-          <div class="btn-text">map</div>
-        </button>
-        <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'" v-if="mapMode=='bookMark'">
-          <i class="bi bi-layout-sidebar-inset-reverse"></i>
-          <div class="btn-text">map</div>
-        </button>
-      </div>
-      <div class="btn-group" role="group">
-        <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal" style="border-radius: 50%">
-          <i class="bi bi-flag-fill"></i>
-          <div class="btn-text">quiz</div>
-        </button>
-      </div>
+    <div class="btn-group" role="group">
+      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
+        <i class="bi bi-person-fill" />
+        <div class="btn-text">log in</div>
+      </button>
+      <button class="btn btn-light btn-circle" @click="logout" style="border-radius: 50%" v-if="auth">
+        <i class="bi bi-person-check-fill" />
+        <div class="btn-text logout">log out</div>
+      </button>
+    </div>
+    <div class="btn-group" role="group" v-if="auth">
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'" v-if="mapMode=='correctAnswersRate'">
+        <i class="bi bi-layout-sidebar-inset" />
+        <div class="btn-text">map</div>
+      </button>
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'" v-if="mapMode=='bookMark'">
+        <i class="bi bi-layout-sidebar-inset-reverse" />
+        <div class="btn-text">map</div>
+      </button>
+    </div>
+    <div class="btn-group" role="group">
+      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal" style="border-radius: 50%">
+        <i class="bi bi-flag-fill" />
+        <div class="btn-text">quiz</div>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -37,9 +37,10 @@
 import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
-import { ref } from 'vue'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import axios from 'axios';
+import { ref } from 'vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'TopPage',
@@ -47,17 +48,26 @@ export default {
     WorldMap,
     AccountModal,
     QuizFilter,
-},
+  },
   setup() {
     const store = useStore();
     const auth = computed(() => store.state.auth);
+    const mapMode = ref("correctAnswersRate");
 
-    const mapMode = ref("correctAnswersRate")
+    const logout = async() => {
+      axios.get('http://localhost:8888/logout')
+      .then(() =>{
+        store.dispatch("setAuth", false);
+        location.reload();
+      })
+    }
+
     return {
       auth,
       mapMode,
+      logout,
     };
-  }
+  },
 };
 </script>
 
