@@ -1,0 +1,80 @@
+h2 {
+  font-size: 38px;
+  font-weight: 500;
+}
+h3 {
+  font-size: 28px;
+  font-weight: 500;
+}
+.pl-32px {
+  padding-left:32px;
+}
+.font-20px{
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: 500;
+}
+.btn-start {
+  color: #fff;
+  background-color: #8DAAC8;
+  border-color: #8DAAC8;
+  border-radius: 10px;
+  height: 47px;
+  width: 110px;
+}
+.btn-start:hover {
+  color: #fff;
+  background-color: #7498bc;
+  border-color: #6a90b7;
+}
+.btn-start:focus, .btn-start.focus {
+  box-shadow: 0 0 0 0.2rem rgba(141, 170, 200, 0.5);
+}
+.btn-start.disabled, .btn-start:disabled {
+  color: #fff;
+  background-color: #8DAAC8;
+  border-color: #8DAAC8;
+}
+.btn-start:not(:disabled):not(.disabled):active, .btn-start:not(:disabled):not(.disabled).active, .show > .btn-start.dropdown-toggle {
+  color: #fff;
+  background-color: #6a90b7;
+  border-color: #6088b2;
+}
+.btn-start:not(:disabled):not(.disabled):active:focus, .btn-start:not(:disabled):not(.disabled).active:focus, .show > .btn-start.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(141, 170, 200, 0.5);
+}
+.btn-reset {
+  color: #fff;
+  background-color: #CE3A13;
+  border-color: #CE3A13;
+  border-radius: 10px;
+  height: 47px;
+  width: 110px;
+}
+.btn-reset:hover {
+  color: #fff;
+  background-color: #ad300f;
+  border-color: #9f2c0e;
+}
+.btn-reset:focus, .btn-reset.focus {
+  box-shadow: 0 0 0 0.2rem rgba(206, 58, 19, 0.5);
+}
+.btn-reset.disabled, .btn-reset:disabled {
+  color: #fff;
+  background-color: #F4C2A7;
+  border-color: #F4C2A7;
+  opacity: 1;
+}
+.btn-reset:not(:disabled):not(.disabled):active, .btn-reset:not(:disabled):not(.disabled).active, .show > .btn-reset.dropdown-toggle {
+  color: #fff;
+  background-color: #9f2c0e;
+  border-color: #91280d;
+}
+.btn-reset:not(:disabled):not(.disabled):active:focus, .btn-reset:not(:disabled):not(.disabled).active:focus, .show > .btn-reset.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(206, 58, 19, 0.5);
+}
+.quiz-filter {
+  background-color: #D9D9D9;
+  border-radius: 32px;
+  padding: 15px 38px 20px 18px
+}
