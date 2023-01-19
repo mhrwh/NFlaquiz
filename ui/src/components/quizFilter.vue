@@ -113,11 +113,19 @@
                 </div>
               </div>
             </div>
+            <div class="row filter-title" :class="errmsg ? 'd-block' : 'd-none'">
+              <div class="col">
+                <p class="font-20px text-danger d-flex mb-0 mt-3">
+                  <i class="bi bi-exclamation-circle me-3px" />
+                  {{ errmsg }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer p-0 border-top-0">
           <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length)">リセット</button>
-          <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz" data-dismiss="modal">スタート</button>
+          <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
         </div>
       </div>
     </div>
@@ -138,6 +146,7 @@ export default {
     const bookmark = ref(false);
     let areas = ref([]);
     let colors = ref([]);
+    let errmsg = ref("");
     let url = '';
     const store = useStore();
     // const router = useRouter();
@@ -167,14 +176,16 @@ export default {
       .then(res => {
         if (res.data.quizzes.length) {
           store.dispatch("setQuizzes", res.data.quizzes);
-          //router.push({name: 'QuizPage',});
+          document.querySelector('body').classList.remove('modal-open');
+          document.querySelector('.modal-backdrop').remove();
+          document.querySelector('#quizFilterModal').style.display = 'none';
+          // router.push({name: 'QuizPage',});
         }else {
-          // モーダルの仕様のためモーダル内に書かずalertで対応
-          alert("該当する国が存在しません");
+          errmsg.value = "該当する国が存在しません";
         }
       })
       .catch(error => {
-        alert(error.response.data.err_msg);
+        errmsg.value = error.response.data.err_msg;
       });
     }
 
@@ -186,6 +197,7 @@ export default {
       url,
       auth,
       reset,
+      errmsg,
     };
   },
 };
