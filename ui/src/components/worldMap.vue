@@ -4,15 +4,17 @@
 </template>
 
 <script>
-import mapData from "../data/mapData"
-import axios from 'axios'
-import svgMap from 'svgmap'
-import 'svgmap/dist/svgMap.min.css'
+import mapData from "../data/mapData";
+import axios from 'axios';
+import svgMap from 'svgmap';
+import 'svgmap/dist/svgMap.min.css';
 export default {
   name: 'WorldMap',
+
   props: {
     mapMode: String,
   },
+
   setup (props) {    
     axios.get('http://localhost:8888/map')
       .then((res =>{
@@ -24,14 +26,16 @@ export default {
           }
           let colorWeight;
           if (props.mapMode == 'correctAnswersRate'){
-            colorWeight = data.map_info[i].weight;
-            maxColorCode = '#F28B7C';
-            minColorCode = '#F6D0CF';
+            // 初期値０の色(maxの色)を薄い色にするため正負反転
+            colorWeight = -data.map_info[i].weight;
+            maxColorCode = '#F6D0CF';
+            minColorCode = '#F28B7C';
             noDataColorCode = '#F6D0CF';
           }else if (props.mapMode == 'bookMark'){
-            colorWeight = data.map_info[i].bookmark;
-            maxColorCode = '#76926A';
-            minColorCode = '#D2DDBF';
+            // 初期値０の色(maxの色)を薄い色にするため正負反転
+            colorWeight = -data.map_info[i].bookmark;
+            maxColorCode = '#D2DDBF';
+            minColorCode = '#76926A';
             noDataColorCode = '#D2DDBF';
           }
           let newData = {
@@ -66,5 +70,6 @@ export default {
 <style>
 .svgMap-map-wrapper {
   background: #9ABBDF;
+  min-height: 100vh;
 }
 </style>

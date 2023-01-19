@@ -1,11 +1,11 @@
 <template>
-  <div class="modal fade bd-example-modal-lg" id="quizFilterModal" tabindex="-1" aria-labelledby="quizFilterModalTitle" aria-hidden="false">
+  <div class="modal fade" id="quizFilterModal" tabindex="-1" aria-labelledby="quizFilterModalTitle" aria-hidden="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content quiz-filter">
         <div class="modal-header p-0 border-bottom-0">
           <h2 class="modal-title" id="quizFilterModalTitle">国旗クイズ</h2>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="bi bi-x-square"></i>
+          <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-square" />
           </button>
         </div>
         <div class="modal-body p-0">
@@ -62,43 +62,43 @@
                 <div class="btn_color_wrap">
                   <input id="btn_red" type="checkbox" value="red" v-model="colors">
                   <label class="red" for="btn_red">
-                    <i :class="colors.includes('red') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('red') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_orange" type="checkbox" value="orange" v-model="colors">
                   <label class="orange" for="btn_orange">
-                    <i :class="colors.includes('orange') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('orange') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_yellow" type="checkbox" value="yellow" v-model="colors">
                   <label class="yellow" for="btn_yellow">
-                    <i :class="colors.includes('yellow') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('yellow') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_green" type="checkbox" value="green" v-model="colors">
                   <label class="green" for="btn_green">
-                    <i :class="colors.includes('green') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('green') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_blue" type="checkbox" value="blue" v-model="colors">
                   <label class="blue" for="btn_blue">
-                    <i :class="colors.includes('blue') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('blue') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_white" type="checkbox" value="white" v-model="colors">
                   <label class="white" for="btn_white">
-                    <i :class="colors.includes('white') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('white') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
                 <div class="btn_color_wrap">
                   <input id="btn_black" type="checkbox" value="black" v-model="colors">
                   <label class="black" for="btn_black">
-                    <i :class="colors.includes('black') ? 'bi bi-palette-fill' : 'bi bi-palette'"></i>
+                    <i :class="colors.includes('black') ? 'bi bi-palette-fill' : 'bi bi-palette'" />
                   </label>
                 </div>
               </div>
@@ -116,8 +116,8 @@
           </div>
         </div>
         <div class="modal-footer p-0 border-top-0">
-          <button type="button" class="btn btn-reset font-20px" @click="reset" :disabled="!(areas.length || colors.length)">リセット</button>
-          <button type="button" class="btn btn-start font-20px" @click="quiz" data-dismiss="modal">スタート</button>
+          <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
+          <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz" data-dismiss="modal">スタート</button>
         </div>
       </div>
     </div>
@@ -125,11 +125,11 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import axios from 'axios'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import axios from 'axios';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+// import { useRouter } from 'vue-router;'
 
 export default {
   name: 'QuizFilter',
@@ -146,7 +146,9 @@ export default {
     const reset = () =>{
       areas.value.splice(0);
       colors.value.splice(0);
+      bookmark.value = false;
     }
+    
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
       if (colors.value.length){
@@ -160,12 +162,12 @@ export default {
         }
       }
       if (bookmark.value){
-        url += 'bookmark=1'
+        url += 'bookmark=1';
       }
       axios.get(url)
       .then(res => {
         store.dispatch("setQuizzes", res.data.quizzes);
-        // router.push({name: 'QuizPage',})
+        // router.push({name: 'QuizPage',});
       })
       .catch(error => {
         console.log(error.response.data.err_msg);
@@ -181,7 +183,7 @@ export default {
       auth,
       reset,
     };
-  }
+  },
 };
 </script>
 
