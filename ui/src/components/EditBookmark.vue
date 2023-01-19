@@ -12,18 +12,21 @@
         <div class="modal-body p-0">
           <div class="container pl-32px">
             <div class="mt-3">
-              <div class="table-responsive" style="height: 600px; overflow-y: scroll;">
+              <div v-if="bookMarks.length > 1" class="table-responsive" style="height: 600px; overflow-y: scroll;">
                 <table class="table table-striped table-hover">
                   <tbody>
                     <tr v-for="value in bookMarks" :key="value.name">
                       <td>{{ value.name }}</td>
                       <td>{{ value.bookmark }}</td>
                       <td>
-                        <button type="button" class="btn btn-danger">削除</button>
+                        <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div v-if="bookMarks.length == 0">
+                ブックマークがありません
               </div>
             </div>
           </div>
@@ -44,13 +47,31 @@ export default {
     onMounted(() => {
       axios
         .get('http://localhost:8888/map')
-        .then((res) => (bookMarks.value = res.data.map_info))
+        .then((res) => {
+          bookMarks.value = res.data.map_info
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.bookmark === 1);
+          bookMarks.value.sort((a, b) => {
+            return a.name.localeCompare(b.name, 'ja');
+          });
+        });
     });
+
+    function deleteBookmark(country_id) {
+      axios
+        .put(`http://localhost:8888/bookmark/${country_id}`)
+        .then(() => {
+          // bookMarks.valueから削除する
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.country_id !== country_id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
     return {
-      bookMarks
+      bookMarks,
+      deleteBookmark
     }
   },
-
 }
-
 </script>

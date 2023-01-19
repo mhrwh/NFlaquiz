@@ -50,8 +50,7 @@ import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
 import EditBookmark from "@/components/EditBookmark.vue";
 import axios from 'axios';
-import { ref } from 'vue';
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -61,11 +60,6 @@ export default {
     AccountModal,
     QuizFilter,
     EditBookmark,
-  },
-  methods: {
-    edit() {
-      this.$router.push('/editbookmark')
-    }
   },
   setup() {
     const store = useStore();
@@ -80,10 +74,24 @@ export default {
         })
     }
 
+    const bookMarks = ref([]);
+    onMounted(() => {
+      axios
+        .get('http://localhost:8888/map')
+        .then((res) => {
+          bookMarks.value = res.data.map_info
+          bookMarks.value = bookMarks.value.filter(bookmark => bookmark.bookmark === 1);
+          bookMarks.value.sort((a, b) => {
+            return a.name.localeCompare(b.name, 'ja');
+          });
+        });
+    });
+
     return {
       auth,
       mapMode,
       logout,
+      bookMarks,
     };
   },
 };
