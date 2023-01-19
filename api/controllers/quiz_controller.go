@@ -146,5 +146,17 @@ func SelectQuiz(c *gin.Context) {
     name_options = append(name_options, tmp)
   }
 
-  c.JSON(http.StatusOK, gin.H{"quizzes": quizzes, "options": name_options})
+  var quiz_with_options []models.QuizWithOption
+  for  i, quiz := range quizzes {
+    quiz_with_options = append(quiz_with_options, models.QuizWithOption{
+      ID: quiz.ID,
+      CountryName: quiz.CountryName,
+      Hint1: quiz.Hint1,
+      Hint2: quiz.Hint2,
+      Hint3: quiz.Hint3,
+      Options: name_options[i],
+    })
+  }
+
+  c.JSON(http.StatusOK, gin.H{"quizzes": quiz_with_options})
 }
