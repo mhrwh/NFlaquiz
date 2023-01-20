@@ -1,11 +1,13 @@
 <template>
-  <WorldMap v-if="mapMode==='correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
-  <WorldMap v-else-if="mapMode==='bookMark'" v-bind:mapMode="mapMode"></WorldMap>
+  <WorldMap v-if="mapMode === 'correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
+  <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
+  <EditBookmark />
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group" role="group">
-      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false" style="border-radius: 50%" v-if="!auth">
+      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false"
+        style="border-radius: 50%" v-if="!auth">
         <i class="bi bi-person-fill" />
         <div class="btn-text">log in</div>
       </button>
@@ -15,17 +17,26 @@
       </button>
     </div>
     <div class="btn-group" role="group" v-if="auth">
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'" v-if="mapMode=='correctAnswersRate'">
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'"
+        v-if="mapMode == 'correctAnswersRate'">
         <i class="bi bi-layout-sidebar-inset" />
         <div class="btn-text">map</div>
       </button>
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'" v-if="mapMode=='bookMark'">
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'"
+        v-if="mapMode == 'bookMark'">
         <i class="bi bi-layout-sidebar-inset-reverse" />
         <div class="btn-text">map</div>
       </button>
     </div>
+    <div class="btn-group" role="group" v-if="auth" data-toggle="modal" data-target="#editBookmark">
+      <button class="btn btn-light btn-circle" style="border-radius: 50%">
+        <i class="bi bi-bookmark-heart" />
+        <div class="btn-text">bookmark</div>
+      </button>
+    </div>
     <div class="btn-group" role="group">
-      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal" style="border-radius: 50%">
+      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#quizFilterModal"
+        style="border-radius: 50%">
         <i class="bi bi-flag-fill" />
         <div class="btn-text">quiz</div>
       </button>
@@ -37,9 +48,9 @@
 import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
+import EditBookmark from "@/components/EditBookmark.vue";
 import axios from 'axios';
-import { ref } from 'vue';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -48,19 +59,21 @@ export default {
     WorldMap,
     AccountModal,
     QuizFilter,
+    EditBookmark,
   },
   setup() {
     const store = useStore();
     const auth = computed(() => store.state.auth);
     const mapMode = ref("correctAnswersRate");
 
-    const logout = async() => {
+    const logout = async () => {
       axios.get('http://localhost:8888/logout')
-      .then(() =>{
-        store.dispatch("setAuth", false);
-        location.reload();
-      })
+        .then(() => {
+          store.dispatch("setAuth", false);
+          location.reload();
+        })
     }
+
 
     return {
       auth,
@@ -80,6 +93,7 @@ export default {
   margin-top: 45px;
   margin-left: 46px;
 }
+
 .btn-circle {
   width: 45px;
   height: 45px;
@@ -88,6 +102,7 @@ export default {
   border-radius: 50%;
   margin-right: 76px;
 }
+
 .btn-circle i {
   position: relative;
   color: #FFCF32;
@@ -96,6 +111,7 @@ export default {
   justify-content: center;
   top: 2px;
 }
+
 .btn-text {
   font-size: 16px;
   width: calc(100% + 26px);
@@ -104,7 +120,8 @@ export default {
   color: #fff;
   border-bottom: solid 1px #FFCF32;
 }
-.logout{
+
+.logout {
   width: calc(100% + 32px);
   margin: 0 -16px;
   margin-top: 14px;
