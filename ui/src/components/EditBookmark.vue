@@ -1,5 +1,6 @@
 <template>
-  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle" aria-hidden="false">
+  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle" data-backdrop="static"
+    aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content quiz-filter">
         <div class="modal-header ml-3 p-0 border-bottom-0">
