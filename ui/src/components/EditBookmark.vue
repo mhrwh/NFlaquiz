@@ -2,7 +2,7 @@
   <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle" aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content quiz-filter">
-        <div class="modal-header p-0 border-bottom-0">
+        <div class="modal-header ml-3 p-0 border-bottom-0">
           <h2 class="modal-title" id="editBookmarkTitle">ブックマーク編集</h2>
           <button type="button" class="close modal-close" data-dismiss="modal" @click="reload" aria-label="Close">
             <i class="bi bi-x-square"></i>
