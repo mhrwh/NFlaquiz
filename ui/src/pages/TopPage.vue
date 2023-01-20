@@ -1,6 +1,6 @@
 <template>
-  <WorldMap v-if="mapMode === 'correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
-  <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
+  <WorldMap v-if="mapMode === 'correctAnswersRate'" :mapMode="mapMode"></WorldMap>
+  <WorldMap v-else-if="mapMode === 'bookMark'" :mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
   <EditBookmark />
@@ -17,12 +17,12 @@
       </button>
     </div>
     <div class="btn-group" role="group" v-if="auth">
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'"
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapSwitch('bookMark')"
         v-if="mapMode == 'correctAnswersRate'">
         <i class="bi bi-layout-sidebar-inset" />
         <div class="btn-text">map</div>
       </button>
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'"
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapSwitch('correctAnswersRate')"
         v-if="mapMode == 'bookMark'">
         <i class="bi bi-layout-sidebar-inset-reverse" />
         <div class="btn-text">map</div>
@@ -50,7 +50,7 @@ import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
 import EditBookmark from "@/components/EditBookmark.vue";
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -64,21 +64,26 @@ export default {
   setup() {
     const store = useStore();
     const auth = computed(() => store.state.auth);
-    const mapMode = ref("correctAnswersRate");
+    const mapMode = computed(() => store.state.mapMode);
 
     const logout = async () => {
       axios.get('http://localhost:8888/logout')
         .then(() => {
           store.dispatch("setAuth", false);
+          store.dispatch('setMapMode', 'correctAnswersRate');
           location.reload();
         })
     }
 
+    const mapSwitch = (mapMode) => {
+      store.dispatch('setMapMode', mapMode);  
+    }
 
     return {
       auth,
       mapMode,
       logout,
+      mapSwitch,
     };
   },
 };
