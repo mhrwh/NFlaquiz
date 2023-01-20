@@ -13,7 +13,7 @@
       </button>
       <button class="btn btn-light btn-circle" @click="logout" style="border-radius: 50%" v-if="auth">
         <i class="bi bi-person-check-fill" />
-        <div class="btn-text logout">log out</div>
+        <div class="btn-text btn-text-logout">log out</div>
       </button>
     </div>
     <div class="btn-group" role="group" v-if="auth">
@@ -31,7 +31,7 @@
     <div class="btn-group" role="group" v-if="auth" data-toggle="modal" data-target="#editBookmark">
       <button class="btn btn-light btn-circle" style="border-radius: 50%">
         <i class="bi bi-bookmark-heart" />
-        <div class="btn-text">bookmark</div>
+        <div class="btn-text btn-text-bookmark">bookmark</div>
       </button>
     </div>
     <div class="btn-group" role="group">
@@ -120,15 +120,19 @@ export default {
 .btn-text {
   font-size: 16px;
   width: calc(100% + 26px);
-  margin: 0 -13px;
-  margin-top: 14px;
+  margin: 14px -13px 0 -13px;
   color: #fff;
   border-bottom: solid 1px #FFCF32;
 }
 
-.logout {
+.btn-text-logout {
   width: calc(100% + 32px);
-  margin: 0 -16px;
-  margin-top: 14px;
+  margin: 14px -16px 0 -16px;
 }
+
+.btn-text-bookmark {
+  width: calc(100% + 54px);
+  margin: 14px -27px 0 -27px;
+}
+
 </style>

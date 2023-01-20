@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade bd-example-modal-lg" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle"
+  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle"
     aria-hidden="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content quiz-filter">
@@ -77,3 +77,4 @@ export default {
   },
 }
 </script>
+
