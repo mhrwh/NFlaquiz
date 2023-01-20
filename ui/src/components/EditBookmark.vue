@@ -15,10 +15,10 @@
                 <table class="table table-striped table-hover">
                   <tbody>
                     <tr v-for="value in bookMarks" :key="value.name">
-                      <td scope="col" style="width: 80%">
+                      <td scope="col" class="align-middle" style="width: 80%">
                         {{ value.name }}
                       </td>
-                      <td scope="col" style="width: 20%">
+                      <td scope="col" class="align-middle" style="width: 20%">
                         <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
                       </td>
                     </tr>
