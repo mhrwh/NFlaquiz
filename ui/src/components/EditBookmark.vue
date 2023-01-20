@@ -1,11 +1,11 @@
 <template>
-  <div class="modal fade bd-example-modal-lg" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle"
+  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle"
     aria-hidden="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content quiz-filter">
         <div class="modal-header p-0 border-bottom-0">
           <h2 class="modal-title" id="editBookmarkTitle">ブックマーク編集</h2>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close modal-close" data-dismiss="modal" @click="reload" aria-label="Close">
             <i class="bi bi-x-square"></i>
           </button>
         </div>
@@ -65,10 +65,16 @@ export default {
         });
     }
 
+    const reload = () => {
+      location.reload();
+    }
+
     return {
       bookMarks,
-      deleteBookmark
+      deleteBookmark,
+      reload,
     }
   },
 }
 </script>
+

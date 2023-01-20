@@ -1,6 +1,6 @@
 <template>
-  <WorldMap v-if="mapMode === 'correctAnswersRate'" v-bind:mapMode="mapMode"></WorldMap>
-  <WorldMap v-else-if="mapMode === 'bookMark'" v-bind:mapMode="mapMode"></WorldMap>
+  <WorldMap v-if="mapMode === 'correctAnswersRate'" :mapMode="mapMode"></WorldMap>
+  <WorldMap v-else-if="mapMode === 'bookMark'" :mapMode="mapMode"></WorldMap>
   <QuizFilter />
   <AccountModal />
   <EditBookmark />
@@ -13,16 +13,16 @@
       </button>
       <button class="btn btn-light btn-circle" @click="logout" style="border-radius: 50%" v-if="auth">
         <i class="bi bi-person-check-fill" />
-        <div class="btn-text logout">log out</div>
+        <div class="btn-text btn-text-logout">log out</div>
       </button>
     </div>
     <div class="btn-group" role="group" v-if="auth">
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'bookMark'"
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapSwitch('bookMark')"
         v-if="mapMode == 'correctAnswersRate'">
         <i class="bi bi-layout-sidebar-inset" />
         <div class="btn-text">map</div>
       </button>
-      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapMode = 'correctAnswersRate'"
+      <button class="btn btn-light btn-circle" style="border-radius: 50%" @click="mapSwitch('correctAnswersRate')"
         v-if="mapMode == 'bookMark'">
         <i class="bi bi-layout-sidebar-inset-reverse" />
         <div class="btn-text">map</div>
@@ -31,7 +31,7 @@
     <div class="btn-group" role="group" v-if="auth" data-toggle="modal" data-target="#editBookmark">
       <button class="btn btn-light btn-circle" style="border-radius: 50%">
         <i class="bi bi-bookmark-heart" />
-        <div class="btn-text">bookmark</div>
+        <div class="btn-text btn-text-bookmark">bookmark</div>
       </button>
     </div>
     <div class="btn-group" role="group">
@@ -50,7 +50,7 @@ import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
 import EditBookmark from "@/components/EditBookmark.vue";
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -64,21 +64,26 @@ export default {
   setup() {
     const store = useStore();
     const auth = computed(() => store.state.auth);
-    const mapMode = ref("correctAnswersRate");
+    const mapMode = computed(() => store.state.mapMode);
 
     const logout = async () => {
       axios.get('http://localhost:8888/logout')
         .then(() => {
           store.dispatch("setAuth", false);
+          store.dispatch('setMapMode', 'correctAnswersRate');
           location.reload();
         })
     }
 
+    const mapSwitch = (mapMode) => {
+      store.dispatch('setMapMode', mapMode);  
+    }
 
     return {
       auth,
       mapMode,
       logout,
+      mapSwitch,
     };
   },
 };
@@ -115,15 +120,19 @@ export default {
 .btn-text {
   font-size: 16px;
   width: calc(100% + 26px);
-  margin: 0 -13px;
-  margin-top: 14px;
+  margin: 14px -13px 0 -13px;
   color: #fff;
   border-bottom: solid 1px #FFCF32;
 }
 
-.logout {
+.btn-text-logout {
   width: calc(100% + 32px);
-  margin: 0 -16px;
-  margin-top: 14px;
+  margin: 14px -16px 0 -16px;
 }
+
+.btn-text-bookmark {
+  width: calc(100% + 54px);
+  margin: 14px -27px 0 -27px;
+}
+
 </style>
