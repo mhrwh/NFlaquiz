@@ -1,6 +1,5 @@
 <template>
-  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle"
-    aria-hidden="false">
+  <div class="modal fade" id="editBookmark" tabindex="-1" aria-labelledby="editBookmarkTitle" aria-hidden="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content quiz-filter">
         <div class="modal-header p-0 border-bottom-0">
@@ -16,8 +15,10 @@
                 <table class="table table-striped table-hover">
                   <tbody>
                     <tr v-for="value in bookMarks" :key="value.name">
-                      <td>{{ value.name }}</td>
-                      <td>
+                      <td scope="col" style="width: 80%">
+                        {{ value.name }}
+                      </td>
+                      <td scope="col" style="width: 20%">
                         <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
                       </td>
                     </tr>
