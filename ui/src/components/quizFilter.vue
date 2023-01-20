@@ -125,19 +125,11 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import { ref } from 'vue'
 import axios from 'axios'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-=======
-import { ref } from 'vue';
-import axios from 'axios';
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router;'
->>>>>>> upstream/develop
 
 export default {
   name: 'QuizFilter',
@@ -175,11 +167,7 @@ export default {
       axios.get(url)
       .then(res => {
         store.dispatch("setQuizzes", res.data.quizzes);
-<<<<<<< HEAD
         router.push({name: 'QuizPage',})
-=======
-        // router.push({name: 'QuizPage',});
->>>>>>> upstream/develop
       })
       .catch(error => {
         console.log(error.response.data.err_msg);
