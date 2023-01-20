@@ -175,7 +175,7 @@ export default {
       }
       axios.get(url)
       .then(res => {
-        if (res.data.quizzes.length) {
+        if (res.data.quizzes) {
           store.dispatch("setQuizzes", res.data.quizzes);
           document.querySelector('body').classList.remove('modal-open');
           document.querySelector('.modal-backdrop').remove();
