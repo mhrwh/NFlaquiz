@@ -1,6 +1,6 @@
 <template>
     <div class="quizapp">
-        <QuizScreen />
+        <!-- <QuizScreen /> -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-main-green">
             <a class="navbar-brand">
                 <img src="../assets/NFlaquizlogo.png" width="30" height="30" class="d-inline-block align-top mr-2" alt="">
@@ -25,16 +25,27 @@
                     <div class="questionBox">
                         <span class="box-title"></span>
                         <p>この国旗の国名は？</p>
-                        <!-- <p>{{ quizzes }}</p> -->
-                        <img :src="flagImgPath" />
-
+                        <img :src="flagImgPath" class="flagImg" />
+                        
                     </div>
                 </div>
 
                 <!-- 回答ボタンを表示する領域 -->
                 <div class="col-md-8 offset-md-2 text-center mt-5">
                     <div class="my-4">
-                        <button v-for="answer in questions.answers" :key="answer" class="answer-btn answer-btn-bg1 mx-4" @click="answerCheck(answer)">{{answer}}</button>
+                        <!-- <button v-for="answer in questions.answers" :key="answer" class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(answer)">{{answer}}</button> -->
+                        <button class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(questions.answers[0])">
+                            {{questions.answers[0]}}
+                        </button>
+                        <button class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(questions.answers[1])">
+                            {{questions.answers[1]}}
+                        </button>
+                        <button class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(questions.answers[2])">
+                            {{questions.answers[2]}}
+                        </button>
+                        <button class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(questions.answers[3])">
+                            {{questions.answers[3]}}
+                        </button>
                     </div>
 
                     <p class="text-center">正解の国名をクリックしよう！</p>
@@ -43,7 +54,7 @@
         </div>
 
         <div class="modal" id="answerCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="answerModal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">問題</h5>
@@ -153,6 +164,7 @@ export default{
                 this.isCorrect = false;
             }
             //結果を表示するモーダルを表示する
+            
 
         },
 
@@ -179,13 +191,15 @@ export default{
         const store = useStore();
         const quizzes = computed(() => store.state.quizzes);
         let currentQuestionNumber = 0;
-        const countryID = quizzes.value[currentQuestionNumber].CountryID.toLowerCase();
+        const countryID = quizzes.value[currentQuestionNumber]["CountryID"].toLowerCase();
         const flagImgPath = ref();
-        flagImgPath.value = "https://cdn.jsdelivr.net/gh/hjnilsson/countryflags@latest/svg/" + countryID + ".svg";
+        flagImgPath.value = "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" + countryID + ".svg";
 
         return{
             quizzes,
             currentQuestionNumber,
+            countryID,
+            flagImgPath,
             questions:{ //問題文のデータ
                 hint: quizzes.value[0].Hint1,       //ヒント
                 answers: [                          //答えの選択肢
@@ -207,23 +221,24 @@ export default{
 
 <style>
 
-/* .modal{
+#answerCheckModal{
     position: fixed;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
     background-color: rgba(0, 0, 0, 0.5);
-} */
+}
 
-/* .modal-dialog{
+.answerModal-dialog{
     position: absolute;
-    top: auto;
-    left: 30%;
+    width: 500px;
+    left: 50%;
     transform: translateX(-50%);
-    background-color: #fff;
-    padding: 20px;
-} */
+    
+}
+
+.flagImg{
+    height: 300px;
+    width: auto;
+    border: 1px solid black; 
+}
 
 .bg-main-green{
     background: #3ebebec8;
