@@ -19,16 +19,15 @@ func UpdateBookmark(c *gin.Context) {
 
 	// ユーザーが認証されていない場合
 	if err != nil {
-    c.JSON(http.StatusUnauthorized, gin.H{"err_msg": "認証されていません"})
+		c.JSON(http.StatusUnauthorized, gin.H{"err_msg": "認証されていません"})
 	}
 
-	database.DB.Table("results").Where("country_id=?",country_id).Where("user_id=?",user.ID).Find(&result)
+	database.DB.Table("results").Where("country_id=?", country_id).Where("user_id=?", user.ID).Find(&result)
 
 	if result.Bookmark == 1 {
 		result.Bookmark = 0
-	} else {
-		result.Bookmark = 1
 	}
+
 	database.DB.Save(&result)
 
 	c.JSON(http.StatusOK, gin.H{"msg": "Change Succeeded"})
