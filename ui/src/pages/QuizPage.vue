@@ -74,16 +74,16 @@
               <div class="col-4">
                 <div class="text-center">
                   <img
+                    v-if="isCorrect"
                     src="../assets/correct.png"
                     class="answer-img"
                     alt=""
-                    v-if="isCorrect"
                   />
                   <img
+                    v-else
                     src="../assets/miss.png"
                     class="answer-img"
                     alt=""
-                    v-if="!isCorrect"
                   />
                 </div>
               </div>
@@ -95,7 +95,7 @@
                   <p></p>
                 </div>
 
-                <div v-if="!isCorrect">
+                <div v-else>
                   <h3 class="answer-title">残念...!</h3>
                   <p>不正解だったときの説明</p>
                   <p></p>
