@@ -243,8 +243,6 @@ export default {
 
     //次の問題に行く処理（いじらない）
     const toNextQuiz = () => {
-      console.log(currentQuizNumber.value)
-      console.log(totalQuizNumber.value)
       if (currentQuizNumber.value < totalQuizNumber.value) {
         updateQuiz();
         // $('#answerCheckModal').modal('hide');    //モーダルを隠す
