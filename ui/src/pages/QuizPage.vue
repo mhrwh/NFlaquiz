@@ -91,7 +91,7 @@
               <div class="col-8">
                 <div v-if="isCorrect">
                   <h3 class="answer-title">正解！</h3>
-                  <p>正解は{{ questions.correctAnswer }}！</p>
+                  <p>正解は{{ currentCorrectAnswer }}！</p>
                   <p></p>
                 </div>
 
@@ -216,8 +216,8 @@ export default {
     };
 
     //答えをチェックする処理
-    const judgeAnswer = (answer) => {
-      isCorrect.value = answer === currentCorrectAnswer.value;
+    const judgeAnswer = (option) => {
+      isCorrect.value = option === currentCorrectAnswer.value;
       results.value.push(isCorrect.value ? 1 : 0);
       //結果を表示するモーダルを表示する
     };
