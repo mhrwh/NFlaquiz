@@ -237,7 +237,7 @@ export default {
     //答えをチェックする処理
     const judgeAnswer = (option) => {
       isCorrect.value = option === currentCorrectAnswer.value;
-      results.value.push(isCorrect.value ? true : false);
+      results.value.push(isCorrect.value ? 1 : 0);
       //結果を表示するモーダルを表示する
     };
 
