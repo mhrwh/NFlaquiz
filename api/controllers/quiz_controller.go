@@ -154,9 +154,7 @@ func SelectQuiz(c *gin.Context) {
       ID: quiz.ID,
       CountryName: quiz.CountryName,
       CountryID: quiz.CountryID,
-      Hint1: quiz.Hint1,
-      Hint2: quiz.Hint2,
-      Hint3: quiz.Hint3,
+      Hints: []string{quiz.Hint1, quiz.Hint2, quiz.Hint3},
       Options: name_options[i],
     })
   }
