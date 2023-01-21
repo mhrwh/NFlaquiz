@@ -38,12 +38,12 @@
         <!-- 回答ボタンを表示する領域 -->
         <div class="col-md-8 offset-md-2 text-center mt-5">
           <div class="my-4">
-            <!-- <button v-for="answer in questions.answers" :key="answer" class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="answerCheck(answer)">{{answer}}</button> -->
+            <!-- <button v-for="answer in questions.answers" :key="answer" class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="judgeAnswer(answer)">{{answer}}</button> -->
             <button
               class="answer-btn answer-btn-bg1 mx-4"
               data-toggle="modal"
               data-target="#answerCheckModal"
-              @click="answerCheck(questions.answers[0])"
+              @click="judgeAnswer(questions.answers[0])"
             >
               {{ questions.answers[0] }}
             </button>
@@ -51,7 +51,7 @@
               class="answer-btn answer-btn-bg1 mx-4"
               data-toggle="modal"
               data-target="#answerCheckModal"
-              @click="answerCheck(questions.answers[1])"
+              @click="judgeAnswer(questions.answers[1])"
             >
               {{ questions.answers[1] }}
             </button>
@@ -59,7 +59,7 @@
               class="answer-btn answer-btn-bg1 mx-4"
               data-toggle="modal"
               data-target="#answerCheckModal"
-              @click="answerCheck(questions.answers[2])"
+              @click="judgeAnswer(questions.answers[2])"
             >
               {{ questions.answers[2] }}
             </button>
@@ -67,7 +67,7 @@
               class="answer-btn answer-btn-bg1 mx-4"
               data-toggle="modal"
               data-target="#answerCheckModal"
-              @click="answerCheck(questions.answers[3])"
+              @click="judgeAnswer(questions.answers[3])"
             >
               {{ questions.answers[3] }}
             </button>
@@ -131,7 +131,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="nextQuestion()"
+              @click="toNextQuiz()"
             >
               次の問題へ
             </button>
@@ -191,41 +191,6 @@ export default {
   components: {
     // QuizScreen,
   },
-
-  methods: {
-    getcurrentQuizNumber() {
-      return this.currentQuizNumber + 1;
-    },
-
-    //答えをチェックする処理
-    answerCheck(userChoiceAnswer) {
-      if (userChoiceAnswer == this.questions.correctAnswer) {
-        //正解！
-        this.isCorrect = true;
-        this.correctAnswerNum += 1;
-      } else {
-        this.isCorrect = false;
-      }
-      //結果を表示するモーダルを表示する
-    },
-
-    //次の問題に行く処理（いじらない）
-    nextQuestion() {
-      if (this.currentQuizNumber < Object.keys(this.questions).length - 1) {
-        this.currentQuizNumber += 1; //最後の問題ではないので問題番号を1ずつ増やす
-        // $('#answerCheckModal').modal('hide');    //モーダルを隠す
-      } else {
-        //最後の問題なので問題番号は増やさない
-        // $('#answerCheckModal').modal('hide');     //モーダルを隠す
-        //すべての問題が解き終わったので、最終結果モーダルを表示する
-        // $('#answerEndedModal').modal({
-        //     keyboard: false,
-        //     backdrop: "static"
-        // });
-      }
-    },
-  },
-
   setup() {
     const store = useStore();
     const quizzes = computed(() => store.state.quizzes);
@@ -249,10 +214,41 @@ export default {
         ".svg";
     };
 
+    //答えをチェックする処理
+    const judgeAnswer = (userChoiceAnswer) => {
+      if (userChoiceAnswer == this.questions.correctAnswer) {
+        //正解！
+        this.isCorrect = true;
+        this.correctAnswerNum += 1;
+      } else {
+        this.isCorrect = false;
+      }
+      //結果を表示するモーダルを表示する
+    }
+
+    //次の問題に行く処理（いじらない）
+    const toNextQuiz = () => {
+      if (this.currentQuizNumber < Object.keys(this.questions).length - 1) {
+        updateQuiz()
+        // $('#answerCheckModal').modal('hide');    //モーダルを隠す
+      } else {
+        //最後の問題なので問題番号は増やさない
+        // $('#answerCheckModal').modal('hide');     //モーダルを隠す
+        //すべての問題が解き終わったので、最終結果モーダルを表示する
+        // $('#answerEndedModal').modal({
+        //     keyboard: false,
+        //     backdrop: "static"
+        // });
+      }
+    }
+
     return {
       currentQuiz,
       currentQuizNumber,
       flagImgPath,
+
+      judgeAnswer,
+      toNextQuiz,
 
       quizzes,
       questions: {
@@ -273,6 +269,8 @@ export default {
       currentQuestionData: [], //現在の問題データ
       correctAnswerNum: 0, //正解した数
       isCorrect: true, //正解しているかどうか
+
+      
     };
   },
 };
