@@ -184,6 +184,9 @@ export default {
       updateQuiz();
     });
 
+    // ※このコメントは仕様が理解出来たら削除してOK
+    // クイズ回答後, 次のクイズに更新する処理(問題番号のカウントアップなどもここで実装)
+    // 次の問題に行く処理の中で呼び出される想定
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
       const currentQuiz = quizzes.value[currentQuizNumber.value - 1];
@@ -198,8 +201,8 @@ export default {
         ".svg";
     };
 
-    // ブックマーク登録の有無を反転させる
     // ※このコメントは仕様が理解出来たら削除してOK
+    // ブックマーク登録の有無を反転させる
     // 例(5問中)
     // 2問目のクイズをブックマーク登録する
     // updateBookmark(1) => bookmarks = [0,1,0,0,0]
@@ -211,6 +214,9 @@ export default {
       bookmarks.value[quiz_index] = bookmarks.value[quiz_index] === 0 ? 1 : 0;
     };
 
+    // ※このコメントは仕様が理解出来たら削除してOK
+    // APIにデータを送信する
+    // ゲーム終了後, "トップへ戻る"/"最初からやり直す"ボタンがクリックされた時に呼び出される想定
     const sendResult = async () => {
       const sendingData = [];
       for (let i = 0; i < totalQuizNumber.value; i++) {
