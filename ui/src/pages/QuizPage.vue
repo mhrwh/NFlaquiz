@@ -181,6 +181,7 @@
 import { onMounted, ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import axios from "axios";
 
 export default {
   name: "QuizPage",
@@ -194,7 +195,8 @@ export default {
     const currentQuiz = ref();
     const currentQuizNumber = ref(0);
     const flagImgPath = ref();
-    // const results = ref([]);
+    const results = ref([]);
+    const bookmarks = ref(Array(quizzes.value.length).fill(0));
 
     const isCorrect = ref();
 
@@ -212,10 +214,27 @@ export default {
         ".svg";
     };
 
+    const sendResult = async () => {
+      const sendingData = [];
+      for (let i = 0; i < quizzes.value.length; i++) {
+        sendingData.push({
+          country_id: quizzes.value[i]["CountryID"],
+          answer: results.value[i],
+          bookmark: bookmarks.value[i],
+        });
+      }
+      try {
+        const url = "http://localhost:8888/result/update";
+        await axios.post(url, sendingData);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
     //答えをチェックする処理
     const judgeAnswer = (answer) => {
       isCorrect.value = answer === currentQuiz.value["CountryID"];
-
+      results.value.push(isCorrect.value ? 1 : 0)
       //結果を表示するモーダルを表示する
     };
 
@@ -232,6 +251,7 @@ export default {
         //     keyboard: false,
         //     backdrop: "static"
         // });
+        sendResult();
       }
     };
 
