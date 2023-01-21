@@ -91,7 +91,7 @@
               <div class="col-8">
                 <div v-if="isCorrect">
                   <h3 class="answer-title">正解！</h3>
-                  <p>正解は{{ currentCorrectAnswer }}！</p>
+                  <p>正解は{{ correctAnswer }}！</p>
                   <p></p>
                 </div>
 
@@ -171,7 +171,7 @@ export default {
 
     const totalQuizNumber = ref(quizzes.value.length);
     const currentQuizNumber = ref(0);
-    const currentCorrectAnswer = ref();
+    const correctAnswer = ref();
     const hints = ref();
     const options = ref();
     const flagImgPath = ref();
@@ -190,7 +190,7 @@ export default {
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
       const currentQuiz = quizzes.value[currentQuizNumber.value - 1];
-      currentCorrectAnswer.value = currentQuiz["CountryName"];
+      correctAnswer.value = currentQuiz["CountryName"];
       hints.value = currentQuiz["Hints"];
       options.value = currentQuiz["Options"];
 
@@ -236,7 +236,7 @@ export default {
 
     //答えをチェックする処理
     const judgeAnswer = (option) => {
-      isCorrect.value = option === currentCorrectAnswer.value;
+      isCorrect.value = option === correctAnswer.value;
       results.value.push(isCorrect.value ? 1 : 0);
       //結果を表示するモーダルを表示する
     };
@@ -259,7 +259,7 @@ export default {
 
     return {
       currentQuizNumber,
-      currentCorrectAnswer,
+      correctAnswer,
       hints,
       options,
       flagImgPath,
