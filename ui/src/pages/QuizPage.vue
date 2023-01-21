@@ -24,7 +24,7 @@
       <div class="row">
         <!-- 問題数を表示する領域 -->
         <div class="col-md-8 offset-md-2">
-          第{{ currentQuizNumber }}問 / 全10問
+          第{{ currentQuizNumber }}問 / 全{{ totalQuizNumber }}問
         </div>
 
         <div class="col-md-8 offset-md-2">
@@ -192,11 +192,12 @@ export default {
     const store = useStore();
     const quizzes = computed(() => store.state.quizzes);
 
+    const totalQuizNumber  = ref(quizzes.value.length)
     const currentQuiz = ref();
     const currentQuizNumber = ref(0);
     const flagImgPath = ref();
     const results = ref([]);
-    const bookmarks = ref(Array(quizzes.value.length).fill(0));
+    const bookmarks = ref(Array(totalQuizNumber.value).fill(0));
 
     const isCorrect = ref();
 
@@ -206,7 +207,7 @@ export default {
 
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
-      currentQuiz.value = quizzes[currentQuizNumber.value - 1];
+      currentQuiz.value = quizzes.value[currentQuizNumber.value - 1];
       const countryID = currentQuiz.value["CountryID"].toLowerCase();
       flagImgPath.value =
         "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" +
@@ -216,7 +217,7 @@ export default {
 
     const sendResult = async () => {
       const sendingData = [];
-      for (let i = 0; i < quizzes.value.length; i++) {
+      for (let i = 0; i < totalQuizNumber.value; i++) {
         sendingData.push({
           country_id: quizzes.value[i]["CountryID"],
           answer: results.value[i],
@@ -240,7 +241,7 @@ export default {
 
     //次の問題に行く処理（いじらない）
     const toNextQuiz = () => {
-      if (currentQuizNumber.value < quizzes.value.length - 1) {
+      if (currentQuizNumber.value < totalQuizNumber.value - 1) {
         updateQuiz();
         // $('#answerCheckModal').modal('hide');    //モーダルを隠す
       } else {
@@ -259,9 +260,8 @@ export default {
       currentQuiz,
       currentQuizNumber,
       flagImgPath,
-
+      totalQuizNumber,
       isCorrect,
-
       judgeAnswer,
       toNextQuiz,
     };
