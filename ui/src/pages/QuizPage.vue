@@ -208,8 +208,8 @@ export default {
     // 3問目のクイズのブックマークを解除
     // updateBookmark(2) => bookmarks = [0,1,0,0,0]
     const updateBookmark = (quiz_index) => {
-      bookmarks.value[quiz_index] = bookmarks.value[quiz_index] === 0 ? 1 : 0
-    }
+      bookmarks.value[quiz_index] = bookmarks.value[quiz_index] === 0 ? 1 : 0;
+    };
 
     const sendResult = async () => {
       const sendingData = [];
@@ -237,7 +237,9 @@ export default {
 
     //次の問題に行く処理（いじらない）
     const toNextQuiz = () => {
-      if (currentQuizNumber.value < totalQuizNumber.value - 1) {
+      console.log(currentQuizNumber.value)
+      console.log(totalQuizNumber.value)
+      if (currentQuizNumber.value < totalQuizNumber.value) {
         updateQuiz();
         // $('#answerCheckModal').modal('hide');    //モーダルを隠す
       } else {
@@ -248,7 +250,6 @@ export default {
         //     keyboard: false,
         //     backdrop: "static"
         // });
-        sendResult();
       }
     };
 
