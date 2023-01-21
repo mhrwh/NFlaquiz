@@ -24,7 +24,7 @@
       <div class="row">
         <!-- 問題数を表示する領域 -->
         <div class="col-md-8 offset-md-2">
-          第{{ getcurrentQuizNumber() }}問 / 全10問
+          第{{ currentQuizNumber }}問 / 全10問
         </div>
 
         <div class="col-md-8 offset-md-2">
@@ -128,11 +128,7 @@
           </div>
 
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="toNextQuiz()"
-            >
+            <button type="button" class="btn btn-primary" @click="toNextQuiz()">
               次の問題へ
             </button>
           </div>
@@ -200,6 +196,8 @@ export default {
     const flagImgPath = ref();
     // const results = ref([]);
 
+    const isCorrect = ref();
+
     onMounted(() => {
       updateQuiz();
     });
@@ -215,21 +213,16 @@ export default {
     };
 
     //答えをチェックする処理
-    const judgeAnswer = (userChoiceAnswer) => {
-      if (userChoiceAnswer == this.questions.correctAnswer) {
-        //正解！
-        this.isCorrect = true;
-        this.correctAnswerNum += 1;
-      } else {
-        this.isCorrect = false;
-      }
+    const judgeAnswer = (answer) => {
+      isCorrect.value = answer === currentQuiz.value["CountryID"];
+
       //結果を表示するモーダルを表示する
-    }
+    };
 
     //次の問題に行く処理（いじらない）
     const toNextQuiz = () => {
-      if (this.currentQuizNumber < Object.keys(this.questions).length - 1) {
-        updateQuiz()
+      if (currentQuizNumber.value < quizzes.value.length - 1) {
+        updateQuiz();
         // $('#answerCheckModal').modal('hide');    //モーダルを隠す
       } else {
         //最後の問題なので問題番号は増やさない
@@ -240,37 +233,17 @@ export default {
         //     backdrop: "static"
         // });
       }
-    }
+    };
 
     return {
       currentQuiz,
       currentQuizNumber,
       flagImgPath,
 
+      isCorrect,
+
       judgeAnswer,
       toNextQuiz,
-
-      quizzes,
-      questions: {
-        //問題文のデータ
-        hint: quizzes.value[0].Hint1, //ヒント
-        answers: [
-          //答えの選択肢
-          quizzes.value[currentQuizNumber].Options[0],
-          quizzes.value[currentQuizNumber].Options[1],
-          quizzes.value[currentQuizNumber].Options[2],
-          quizzes.value[currentQuizNumber].Options[3],
-        ],
-        correctAnswer: quizzes.value[currentQuizNumber].CountryName,
-        description: "", //答えたあとに表示する説明など
-      },
-
-      //必要となる変数を定義する
-      currentQuestionData: [], //現在の問題データ
-      correctAnswerNum: 0, //正解した数
-      isCorrect: true, //正解しているかどうか
-
-      
     };
   },
 };
