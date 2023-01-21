@@ -24,7 +24,7 @@
       <div class="row">
         <!-- 問題数を表示する領域 -->
         <div class="col-md-8 offset-md-2">
-          第{{ getCurrentQuestionNumber() }}問 / 全10問
+          第{{ getcurrentQuizNumber() }}問 / 全10問
         </div>
 
         <div class="col-md-8 offset-md-2">
@@ -193,8 +193,8 @@ export default {
   },
 
   methods: {
-    getCurrentQuestionNumber() {
-      return this.currentQuestionNumber + 1;
+    getcurrentQuizNumber() {
+      return this.currentQuizNumber + 1;
     },
 
     //答えをチェックする処理
@@ -211,8 +211,8 @@ export default {
 
     //次の問題に行く処理（いじらない）
     nextQuestion() {
-      if (this.currentQuestionNumber < Object.keys(this.questions).length - 1) {
-        this.currentQuestionNumber += 1; //最後の問題ではないので問題番号を1ずつ増やす
+      if (this.currentQuizNumber < Object.keys(this.questions).length - 1) {
+        this.currentQuizNumber += 1; //最後の問題ではないので問題番号を1ずつ増やす
         // $('#answerCheckModal').modal('hide');    //モーダルを隠す
       } else {
         //最後の問題なので問題番号は増やさない
@@ -229,9 +229,10 @@ export default {
   setup() {
     const store = useStore();
     const quizzes = computed(() => store.state.quizzes);
-    let currentQuestionNumber = 0;
+
+    let currentQuizNumber = 0;
     const countryID =
-      quizzes.value[currentQuestionNumber]["CountryID"].toLowerCase();
+      quizzes.value[currentQuizNumber]["CountryID"].toLowerCase();
     const flagImgPath = ref();
     flagImgPath.value =
       "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" +
@@ -240,7 +241,7 @@ export default {
 
     return {
       quizzes,
-      currentQuestionNumber,
+      currentQuizNumber,
       countryID,
       flagImgPath,
       questions: {
@@ -248,12 +249,12 @@ export default {
         hint: quizzes.value[0].Hint1, //ヒント
         answers: [
           //答えの選択肢
-          quizzes.value[currentQuestionNumber].Options[0],
-          quizzes.value[currentQuestionNumber].Options[1],
-          quizzes.value[currentQuestionNumber].Options[2],
-          quizzes.value[currentQuestionNumber].Options[3],
+          quizzes.value[currentQuizNumber].Options[0],
+          quizzes.value[currentQuizNumber].Options[1],
+          quizzes.value[currentQuizNumber].Options[2],
+          quizzes.value[currentQuizNumber].Options[3],
         ],
-        correctAnswer: quizzes.value[currentQuestionNumber].CountryName,
+        correctAnswer: quizzes.value[currentQuizNumber].CountryName,
         description: "", //答えたあとに表示する説明など
       },
 
