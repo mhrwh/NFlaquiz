@@ -192,9 +192,11 @@ export default {
     const store = useStore();
     const quizzes = computed(() => store.state.quizzes);
 
-    const totalQuizNumber  = ref(quizzes.value.length)
-    const currentQuiz = ref();
+    const totalQuizNumber = ref(quizzes.value.length);
     const currentQuizNumber = ref(0);
+    const currentCorrectAnswer = ref();
+    const hints = ref();
+    const options = ref();
     const flagImgPath = ref();
     const results = ref([]);
     const bookmarks = ref(Array(totalQuizNumber.value).fill(0));
@@ -207,8 +209,12 @@ export default {
 
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
-      currentQuiz.value = quizzes.value[currentQuizNumber.value - 1];
-      const countryID = currentQuiz.value["CountryID"].toLowerCase();
+      const currentQuiz = quizzes.value[currentQuizNumber.value - 1];
+      currentCorrectAnswer.value = currentQuiz["CountryName"];
+      hints.value = currentQuiz["Hints"];
+      options.value = currentQuiz["Options"];
+
+      const countryID = currentQuiz["CountryID"].toLowerCase();
       flagImgPath.value =
         "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" +
         countryID +
@@ -234,8 +240,8 @@ export default {
 
     //答えをチェックする処理
     const judgeAnswer = (answer) => {
-      isCorrect.value = answer === currentQuiz.value["CountryID"];
-      results.value.push(isCorrect.value ? 1 : 0)
+      isCorrect.value = answer === currentCorrectAnswer.value;
+      results.value.push(isCorrect.value ? 1 : 0);
       //結果を表示するモーダルを表示する
     };
 
@@ -257,8 +263,10 @@ export default {
     };
 
     return {
-      currentQuiz,
       currentQuizNumber,
+      currentCorrectAnswer,
+      hints,
+      options,
       flagImgPath,
       totalQuizNumber,
       isCorrect,
