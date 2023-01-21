@@ -180,7 +180,7 @@ export default {
           document.querySelector('body').classList.remove('modal-open');
           document.querySelector('.modal-backdrop').remove();
           document.querySelector('#quizFilterModal').style.display = 'none';
-          // router.push({name: 'QuizPage',});
+          router.push({name: 'QuizPage',});
         }else {
           errmsg.value = "該当する国が存在しません";
         }
