@@ -38,38 +38,15 @@
         <!-- 回答ボタンを表示する領域 -->
         <div class="col-md-8 offset-md-2 text-center mt-5">
           <div class="my-4">
-            <!-- <button v-for="answer in questions.answers" :key="answer" class="answer-btn answer-btn-bg1 mx-4" data-toggle="modal" data-target="#answerCheckModal" @click="judgeAnswer(answer)">{{answer}}</button> -->
             <button
+              v-for="(option, index) in options"
+              :key="index"
               class="answer-btn answer-btn-bg1 mx-4"
               data-toggle="modal"
               data-target="#answerCheckModal"
-              @click="judgeAnswer(questions.answers[0])"
+              @click="judgeAnswer(option)"
             >
-              {{ questions.answers[0] }}
-            </button>
-            <button
-              class="answer-btn answer-btn-bg1 mx-4"
-              data-toggle="modal"
-              data-target="#answerCheckModal"
-              @click="judgeAnswer(questions.answers[1])"
-            >
-              {{ questions.answers[1] }}
-            </button>
-            <button
-              class="answer-btn answer-btn-bg1 mx-4"
-              data-toggle="modal"
-              data-target="#answerCheckModal"
-              @click="judgeAnswer(questions.answers[2])"
-            >
-              {{ questions.answers[2] }}
-            </button>
-            <button
-              class="answer-btn answer-btn-bg1 mx-4"
-              data-toggle="modal"
-              data-target="#answerCheckModal"
-              @click="judgeAnswer(questions.answers[3])"
-            >
-              {{ questions.answers[3] }}
+              {{ option }}
             </button>
           </div>
 
