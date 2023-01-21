@@ -182,7 +182,7 @@
 
 <script>
 // import QuizScreen from "@/components/quizScreen.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
@@ -230,20 +230,31 @@ export default {
     const store = useStore();
     const quizzes = computed(() => store.state.quizzes);
 
-    let currentQuizNumber = 0;
-    const countryID =
-      quizzes.value[currentQuizNumber]["CountryID"].toLowerCase();
+    const currentQuiz = ref();
+    const currentQuizNumber = ref(0);
     const flagImgPath = ref();
-    flagImgPath.value =
-      "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" +
-      countryID +
-      ".svg";
+    // const results = ref([]);
+
+    onMounted(() => {
+      updateQuiz();
+    });
+
+    const updateQuiz = () => {
+      currentQuizNumber.value += 1;
+      currentQuiz.value = quizzes[currentQuizNumber.value - 1];
+      const countryID = currentQuiz.value["CountryID"].toLowerCase();
+      flagImgPath.value =
+        "https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/" +
+        countryID +
+        ".svg";
+    };
 
     return {
-      quizzes,
+      currentQuiz,
       currentQuizNumber,
-      countryID,
       flagImgPath,
+
+      quizzes,
       questions: {
         //問題文のデータ
         hint: quizzes.value[0].Hint1, //ヒント
