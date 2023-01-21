@@ -198,6 +198,19 @@ export default {
         ".svg";
     };
 
+    // ブックマーク登録の有無を反転させる
+    // ※このコメントは仕様が理解出来たら削除してOK
+    // 例(5問中)
+    // 2問目のクイズをブックマーク登録する
+    // updateBookmark(1) => bookmarks = [0,1,0,0,0]
+    // 3問目のクイズをブックマーク登録する
+    // updateBookmark(2) => bookmarks = [0,1,1,0,0]
+    // 3問目のクイズのブックマークを解除
+    // updateBookmark(2) => bookmarks = [0,1,0,0,0]
+    const updateBookmark = (quiz_index) => {
+      bookmarks.value[quiz_index] = bookmarks.value[quiz_index] === 0 ? 1 : 0
+    }
+
     const sendResult = async () => {
       const sendingData = [];
       for (let i = 0; i < totalQuizNumber.value; i++) {
