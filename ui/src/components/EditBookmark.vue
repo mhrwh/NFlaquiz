@@ -12,14 +12,16 @@
         <div class="modal-body p-0">
           <div class="mt-3">
             <div class="container">
-              <div v-if="bookMarks.length > 0" class="table-responsive bookmarks-table" style="overflow-y: scroll">
-                <table class="table table-striped table-hover">
+              <div v-if="bookMarks.length > 0" class="table-responsive bookmarks-table bookmarks-country-name-col"
+                style="overflow-y: scroll ">
+                <table class="table table-hover">
                   <tbody>
-                    <tr v-for="value in bookMarks" :key="value.name">
-                      <td scope="col" class="align-middle" style="w-70pct">
+                    <tr v-for="(value, index) in bookMarks" :key="value.name"
+                      :class="{ 'even': index % 2 === 0, 'odd': index % 2 !== 0 }">
+                      <td scope="col" class="align-middle w-70pct">
                         {{ value.name }}
                       </td>
-                      <td scope="col" class="align-middle" style="w-30pct">
+                      <td scope="col" class="align-middle w-30pct">
                         <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
                       </td>
                     </tr>
@@ -81,6 +83,15 @@ export default {
 </script>
 
 <style>
+.odd {
+  background-color: #E9CE3F;
+}
+
+.even {
+  background-color: #F5F2E9;
+  ;
+}
+
 .w-70pct {
   width: 70%
 }
@@ -93,7 +104,7 @@ export default {
   height: 450px
 }
 
-.country-name-col {
+.bookmarks-country-name-col {
   font-size: 24px
 }
 </style>
