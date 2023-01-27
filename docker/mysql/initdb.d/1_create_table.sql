@@ -23,6 +23,9 @@ CREATE TABLE countries
   area_id VARCHAR(30),
   name VARCHAR(20),
   description VARCHAR(200),
+  hint1 VARCHAR(50),
+  hint2 VARCHAR(50),
+  hint3 VARCHAR(50),
   FOREIGN KEY (area_id) REFERENCES areas(id),
   PRIMARY KEY(id)
 );
@@ -34,18 +37,6 @@ CREATE TABLE flag_colors
   color_id VARCHAR(10),
   FOREIGN KEY (country_id) REFERENCES countries(id),
   FOREIGN KEY (color_id) REFERENCES colors(id),
-  PRIMARY KEY(id)
-);
-
-CREATE TABLE quizzes
-(
-  id INT NOT NULL AUTO_INCREMENT UNIQUE,
-  country_name VARCHAR(30),
-  country_id VARCHAR(2),
-  hint1 VARCHAR(50),
-  hint2 VARCHAR(50),
-  hint3 VARCHAR(50),
-  FOREIGN KEY (country_id) REFERENCES countries(id),
   PRIMARY KEY(id)
 );
 

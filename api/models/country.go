@@ -5,5 +5,7 @@ type Country struct {
 	AreaID  		string
 	Name    		string
 	Description string
-
+	Hint1       string
+	Hint2       string
+	Hint3       string
 }
