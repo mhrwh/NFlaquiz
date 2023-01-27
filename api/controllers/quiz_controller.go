@@ -87,16 +87,15 @@ func SelectQuiz(c *gin.Context) {
 	})
 
 	// 絞り込んだ国からクイズを選択
-	var filtered_countries []models.Country
 	if err != nil {
 		// 未ログインユーザーの場合, ランダムにクイズを選択
-		database.DB.Where("id in (?)", country_ids_array).Order("rand()").Limit(10).Find(&filtered_countries)
+		database.DB.Where("id in (?)", country_ids_array).Order("rand()").Limit(10).Find(&countries)
 	} else {
 		// ログイン済みユーザーの場合, 未回答のものを優先して選択
 		query := database.DB.Joins("left outer join results on countries.id = results.country_id").
 			Where("countries.id in (?)", country_ids_array).
 			Where("countries.id not in (?)", database.DB.Table("results").Select("country_id").Where("user_id=?", user.ID)).
-			Order("rand()").Limit(10).Find(&filtered_countries)
+			Order("rand()").Limit(10).Find(&countries)
 
 		// 未回答問題数が10未満の場合, 正答率が低い順に残りを埋める
 		left := int(10 - query.RowsAffected)
@@ -111,21 +110,23 @@ func SelectQuiz(c *gin.Context) {
 				"(?) UNION (?)",
 				query,
 				low_weight_query,
-			).Scan(&filtered_countries)
+			).Scan(&countries)
 		}
 	}
 
 	// 選択肢の生成
+	var all_countries []models.Country
+	database.DB.Find(&all_countries)
 	rand.Seed(time.Now().UnixNano())
 	var country_names []string
 	var options [][]string
 
-	for _, country := range countries {
+	for _, country := range all_countries {
 		country_names = append(country_names, country.Name)
 	}
 
-	for i := 0; i < len(filtered_countries); i++ {
-		var option []string = []string{filtered_countries[i].Name}
+	for i := 0; i < len(countries); i++ {
+		var option []string = []string{countries[i].Name}
 
 		for j := 0; j < 3; j++ {
 			for {
@@ -145,7 +146,7 @@ func SelectQuiz(c *gin.Context) {
 	}
 
 	var quizzes []models.Quiz
-	for i, country := range filtered_countries {
+	for i, country := range countries {
 		quizzes = append(quizzes, models.Quiz{
 			CountryName: country.Name,
 			CountryID:   country.ID,
