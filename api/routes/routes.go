@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"time"
-	"github.com/raylicola/NFlaquiz/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-  "github.com/gin-contrib/cors"
+	"github.com/raylicola/NFlaquiz/controllers"
+	"time"
 )
 
 func GetRouter() *gin.Engine {
@@ -12,23 +12,23 @@ func GetRouter() *gin.Engine {
 	router.Use(cors.New(cors.Config{
 		// 許可するアクセス元
 		AllowOrigins: []string{
-				"http://localhost:8080",
+			"http://localhost:8080",
 		},
 		// アクセス許可するHTTPメソッド
 		AllowMethods: []string{
-				"POST",
-				"GET",
-				"PUT",
+			"POST",
+			"GET",
+			"PUT",
 		},
 		// 許可するHTTPリクエストヘッダ
 		AllowHeaders: []string{
-				"Content-Type",
+			"Content-Type",
 		},
 		// cookieなどの情報を必要とする
 		AllowCredentials: true,
 		// preflightリクエストの結果をキャッシュする時間
 		MaxAge: 24 * time.Hour,
-}))
+	}))
 
 	router.POST("/signup", controllers.Signup)
 	router.POST("/login", controllers.Login)
