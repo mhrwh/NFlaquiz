@@ -11,7 +11,7 @@ import (
 // 戻り値:
 //   成功時：ユーザー情報
 //   失敗時：エラー情報
-func AuthUser(c *gin.Context) (*models.User, error){
+func AuthUser(c *gin.Context) (*models.User, error) {
 	cookie, err := c.Cookie("jwt")
 
 	if err != nil {
