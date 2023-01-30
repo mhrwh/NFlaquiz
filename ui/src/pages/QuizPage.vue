@@ -1,7 +1,7 @@
 <template>
   <div class="quizapp">
     <!-- <QuizScreen /> -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-main-green">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-main-green">
       <a class="navbar-brand">
         <img
           src="../assets/NFlaquizlogo.png"
@@ -12,7 +12,7 @@
         />
         NFlaquiz
       </a>
-    </nav>
+    </nav> -->
     <div class="container">
       <div class="row my-3">
         <div class="col-12">
@@ -25,6 +25,13 @@
         <!-- 問題数を表示する領域 -->
         <div class="col-md-8 offset-md-2">
           第{{ currentQuizNumber }}問 / 全{{ totalQuizNumber }}問
+          <button
+            class="hint-btn" 
+            data-toggle="modal" 
+            data-target="#hintModal"
+          >
+            ヒント
+          </button>
         </div>
 
         <div class="col-md-8 offset-md-2">
@@ -37,7 +44,7 @@
 
         <!-- 回答ボタンを表示する領域 -->
         <div class="col-md-8 offset-md-2 text-center mt-5">
-          <div class="my-4">
+          <div class="btn-box">
             <button
               v-for="(option, index) in options"
               :key="index"
@@ -55,6 +62,31 @@
       </div>
     </div>
 
+    <!-- ヒントを表示するモーダル -->
+
+    <div 
+      class="modal"
+      id="hintModal"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            ヒント
+            <button class="hint-close" data-dismiss="modal">×</button>
+          </div>
+
+          <div class="modal-body" v-for="(hint, number) in hints" :key="hint">
+            ヒント{{ number+1 }}：{{ hint }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 答えを表示するモーダル -->
+
     <div
       class="modal"
       id="answerCheckModal"
@@ -63,10 +95,13 @@
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
-      <div class="answerModal-dialog modal-dialog-centered" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalCenterTitle">問題</h5>
+            <button class="btn btn-light btn-circle" @click="updateBookmark()">
+              <i class="bi bi-bookmark-heart" />
+            </button>
           </div>
 
           <div class="modal-body">
@@ -97,7 +132,7 @@
 
                 <div v-else>
                   <h3 class="answer-title">残念...!</h3>
-                  <p>不正解だったときの説明</p>
+                  <p>正解は{{ correctAnswer }}！</p>
                   <p></p>
                 </div>
               </div>
@@ -105,8 +140,21 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="toNextQuiz()">
+            <button 
+              v-show="currentQuizNumber < totalQuizNumber" 
+              type="button" class="btn btn-primary" 
+              data-dismiss="modal" 
+              @click="toNextQuiz()"
+            >
               次の問題へ
+            </button>
+            <button 
+              v-if="currentQuizNumber == totalQuizNumber" 
+              type="button" class="btn btn-primary" 
+              data-toggle="modal" data-target="#answerEndedModal" 
+              @click="toNextQuiz()"
+            >
+              結果へ
             </button>
           </div>
         </div>
@@ -136,16 +184,18 @@
               </div>
 
               <div class="col-8">
-                <p>すべてが終了したときの説明</p>
+                <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
+                <div v-for="(result, number) in results" :key="result">
+                  <div v-if="result">第{{ number+1 }}問.〇</div>
+                  <div v-else>第{{ number+1 }}問.×</div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <a href="index.html" class="btn btn-success">クイズ一覧にもどる</a>
-            <a href="#" class="btn btn-primary" @click="reload()"
-              >最初から答える</a
-            >
+            <button class="btn btn-success" @click="sendResult()">トップへ戻る</button>
+            <button class="btn btn-primary" @click="sendResult()">最初から答える</button>
           </div>
         </div>
       </div>
@@ -179,6 +229,7 @@ export default {
     const bookmarks = ref(Array(totalQuizNumber.value).fill(0));
 
     const isCorrect = ref();
+    const correctNumber = ref([]);
 
     onMounted(() => {
       updateQuiz();
@@ -238,22 +289,17 @@ export default {
     const judgeAnswer = (option) => {
       isCorrect.value = option === correctAnswer.value;
       results.value.push(isCorrect.value ? 1 : 0);
-      //結果を表示するモーダルを表示する
+      if (isCorrect.value) {
+        correctNumber.value.push(1)
+      }
     };
 
     //次の問題に行く処理（いじらない）
     const toNextQuiz = () => {
       if (currentQuizNumber.value < totalQuizNumber.value) {
         updateQuiz();
-        // $('#answerCheckModal').modal('hide');    //モーダルを隠す
       } else {
-        //最後の問題なので問題番号は増やさない
-        // $('#answerCheckModal').modal('hide');     //モーダルを隠す
-        //すべての問題が解き終わったので、最終結果モーダルを表示する
-        // $('#answerEndedModal').modal({
-        //     keyboard: false,
-        //     backdrop: "static"
-        // });
+        sendResult();
       }
     };
 
@@ -267,22 +313,33 @@ export default {
       isCorrect,
       judgeAnswer,
       toNextQuiz,
+      results,
+      correctNumber,
+      updateBookmark,
     };
   },
 };
 </script>
 
 <style>
-#answerCheckModal {
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
+
+.btn-box button:active {
+  margin-top: 0.2em;
 }
 
-.answerModal-dialog {
-  position: absolute;
-  width: 500px;
-  left: 50%;
-  transform: translateX(-50%);
+.hint-btn {
+  display: block;
+  margin: 5px 0 0 auto;
+  background: rgb(221, 82, 47);
+  border-radius:10px;
+  color: #fff;
+  box-shadow: 0 1px 0 #988588;
+  border: solid 3px #668d1f00;
+  transition: 0.4s;
+}
+
+.hint-close {
+  border: solid 3px #668d1f00;
 }
 
 .flagImg {
@@ -320,7 +377,7 @@ export default {
   transition: 0.4s;
 }
 
-.my-4 {
+.btn-box {
   display: inline;
 }
 
@@ -340,14 +397,6 @@ export default {
   background: #19c81c;
 }
 
-.answer-btn-bg2 {
-  background: #f2c12e;
-}
-
-.answer-btn-bg3 {
-  background: #f2e22e;
-}
-
 .questionBox {
   margin: 7;
   padding: 5px;
@@ -355,7 +404,7 @@ export default {
   text-align: center;
 }
 
-.choiceBox {
+/* .choiceBox {
   padding: 0.5em 1em;
   margin: 2em 0;
   color: #5d627b;
@@ -367,7 +416,7 @@ export default {
 .choiceBox p {
   margin: 0;
   padding: 0;
-}
+} */
 
 .answer-img {
   width: 100px;
