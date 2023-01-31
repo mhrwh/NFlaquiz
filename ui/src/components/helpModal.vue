@@ -1,7 +1,7 @@
 <template>
 	<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalTitle" aria-hidden="false">
 		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
+			<div class="modal-content help-modal">
 				<div class="modal-header p-0 border-bottom-0">
 					<h2 class="modal-title" id="helpModalTitle">ヘルプ</h2>
 				</div>
