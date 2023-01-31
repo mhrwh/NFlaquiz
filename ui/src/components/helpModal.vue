@@ -32,7 +32,8 @@
 							クイズボタン
 						</div>
 						<div class="tab-pane fade" id="tab2" v-if="selectedTab === 'tab2'">
-							ログインすることでブックマーク機能が使えたり、正答率・ブックマークした国をマップに反映することができます。
+							ログインすることでブックマーク機能が使えたり、<br>
+							正答率・ブックマークした国をマップに反映することができます。
 						</div>
 					</div>
 				</div>
@@ -51,3 +52,20 @@ export default {
 	}
 }
 </script>
+
+<style>
+.modal-dialog {
+	height: 80%;
+}
+
+.modal-content {
+	height: 50%;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-body {
+	flex: 1;
+	overflow-y: auto;
+}
+</style>
