@@ -4,6 +4,8 @@
   <QuizFilter />
   <AccountModal />
   <EditBookmark />
+  <HelpModal />
+
   <div class="btn-toolbar" role="toolbar">
     <div class="btn-group" role="group">
       <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#loginModal" data-backdrop="false"
@@ -41,14 +43,21 @@
         <div class="btn-text">quiz</div>
       </button>
     </div>
+    <div class="btn-group" role="group" data-toggle="modal" data-target="#helpModal">
+      <button class="btn btn-light btn-circle" style="border-radius: 50%">
+        <i class="bi bi-patch-question" />
+        <div class="btn-text">help</div>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue';
-import QuizFilter from "@/components/quizFilter.vue";
-import EditBookmark from "@/components/EditBookmark.vue";
+import QuizFilter from '@/components/quizFilter.vue';
+import EditBookmark from '@/components/EditBookmark.vue';
+import HelpModal from '@/components/helpModal.vue';
 import axios from 'axios';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
@@ -60,6 +69,7 @@ export default {
     AccountModal,
     QuizFilter,
     EditBookmark,
+    HelpModal
   },
   setup() {
     const store = useStore();
@@ -76,7 +86,7 @@ export default {
     }
 
     const mapSwitch = (mapMode) => {
-      store.dispatch('setMapMode', mapMode);  
+      store.dispatch('setMapMode', mapMode);
     }
 
     return {
@@ -134,5 +144,4 @@ export default {
   width: calc(100% + 54px);
   margin: 14px -27px 0 -27px;
 }
-
 </style>
