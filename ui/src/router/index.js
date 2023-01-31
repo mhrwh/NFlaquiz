@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TopPage from '@/pages/TopPage'
-// import EditBookmark from '@/component/EditBookmark'
 
 const routes = [
     {

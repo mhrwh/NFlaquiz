@@ -15,7 +15,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 // ログイン
 // 受信：
 //   email:メールアドレス
@@ -25,11 +24,11 @@ import (
 //   失敗時：エラーメッセージ(400)
 func Login(c *gin.Context) {
 	var user models.User
-  email := c.PostForm("email")
-  password := c.PostForm("password")
+	email := c.PostForm("email")
+	password := c.PostForm("password")
 
 	// メールアドレスが未登録の場合
-  res := database.DB.Where("email = ?", email).First(&user)
+	res := database.DB.Where("email = ?", email).First(&user)
 	if res.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err_msg": "メールアドレスまたはパスワードが違います"})
 		return
@@ -41,33 +40,32 @@ func Login(c *gin.Context) {
 		return
 	}
 
-  // ユーザー認証の設定
-  claims := jwt.MapClaims{
+	// ユーザー認証の設定
+	claims := jwt.MapClaims{
 		"sub": user.ID,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(),
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	}
-  // ヘッダーとペイロードの生成
-  token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-  // トークンに署名を付与
-  tokenString, _ := token.SignedString([]byte("SECRET_KEY"))
+	// ヘッダーとペイロードの生成
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	// トークンに署名を付与
+	tokenString, _ := token.SignedString([]byte("SECRET_KEY"))
 
-  cookie := new(http.Cookie)
-  cookie.Value = tokenString
+	cookie := new(http.Cookie)
+	cookie.Value = tokenString
 
-  // ローカル環境の場合
-  c.SetSameSite(http.SameSiteNoneMode)
-  if os.Getenv("ENV") == "local" {
-    c.SetCookie("jwt", cookie.Value, 3600, "/", "localhost", true, true)
-  }
+	// ローカル環境の場合
+	c.SetSameSite(http.SameSiteNoneMode)
+	if os.Getenv("ENV") == "local" {
+		c.SetCookie("jwt", cookie.Value, 3600, "/", "localhost", true, true)
+	}
 
-  // 本番環境の場合
-  if os.Getenv("ENV") == "production" {
-      c.SetCookie("jwt", cookie.Value, 3600, "/", "your_domain", true, true)
-  }
+	// 本番環境の場合
+	if os.Getenv("ENV") == "production" {
+		c.SetCookie("jwt", cookie.Value, 3600, "/", "your_domain", true, true)
+	}
 
-  c.JSON(http.StatusOK, gin.H{"user": user})
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }
-
 
 // ログアウト
 // 返り値：ログアウト完了のメッセージ
@@ -75,7 +73,6 @@ func Logout(c *gin.Context) {
 	c.SetCookie("jwt", "", 3600, "/", "localhost", true, true)
 	c.JSON(http.StatusOK, gin.H{"msg": "ログアウトしました"})
 }
-
 
 // ユーザーの新規作成
 // 受信：
