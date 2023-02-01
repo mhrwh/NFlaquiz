@@ -17,7 +17,7 @@
             </div>
             <div class="row filter-title">
               <div class="col">
-                <p class="font-20px list-20px">地域</p>
+                <div class="font-20px pl-3">地域</div>
               </div>
             </div>
             <div class="row pl-28px">
@@ -54,7 +54,7 @@
             </div>
             <div class="row filter-title">
               <div class="col">
-                <li class="font-20px list-20px">色</li>
+                <div class="font-20px pl-3">国旗の色</div>
               </div>
             </div>
             <div class="row pl-28px">
