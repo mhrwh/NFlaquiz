@@ -113,14 +113,20 @@
                 </div>
               </div>
             </div>
-            <div class="row filter-title" :class="errmsg ? 'd-block' : 'd-none'">
-              <div class="col">
-                <p class="font-20px text-danger d-flex mb-0 mt-3">
-                  <i class="bi bi-exclamation-circle me-3px" />
-                  {{ errmsg }}
-                </p>
-              </div>
+          </div>
+        </div>
+        <div class="modal-footer p-0 border-top-0 justify-content-between">
+          <div class="col">
+            <div :class="errmsg ? 'd-block' : 'd-none'">
+              <p class="font-20px text-danger d-flex mb-0">
+                <i class="bi bi-exclamation-circle mr-3px" />
+                {{ errmsg }}
+              </p>
             </div>
+          </div>
+          <div>
+            <button type="button" class="m-1 btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
+            <button type="button" class="m-1 btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
           </div>
         </div>
       </div>
