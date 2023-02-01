@@ -9,15 +9,15 @@
           </button>
         </div>
         <div class="modal-body p-0">
-          <div class="container pl-32px">
+          <div class="container">
             <div class="row py-8px">
               <div class="col">
-                <h3>絞り込み条件</h3>
+                <div class="font-28px">絞り込み条件</div>
               </div>
             </div>
             <div class="row filter-title">
               <div class="col">
-                <div class="font-20px pl-3">地域</div>
+                <div class="font-20px">地域</div>
               </div>
             </div>
             <div class="row pl-28px">
@@ -54,7 +54,7 @@
             </div>
             <div class="row filter-title">
               <div class="col">
-                <div class="font-20px pl-3">国旗の色</div>
+                <div class="font-20px">国旗の色</div>
               </div>
             </div>
             <div class="row pl-28px">
@@ -122,10 +122,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer p-0 border-top-0">
-          <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
-          <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
         </div>
       </div>
     </div>
@@ -237,7 +233,7 @@ export default {
   margin-right: 7px;
 }
 .filter-title {
-  padding:4px 0 4px 10px;
+  padding:16px 0 4px 26px;
 }
 .btn_wrap{
   display:inline-block;
