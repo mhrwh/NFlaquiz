@@ -3,35 +3,33 @@
     aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content edit-bookmark-modal">
-        <div class="modal-header p-0 border-bottom-0">
+        <div class="modal-header px-4 border-bottom-0">
           <h2 class="modal-title" id="editBookmarkTitle">ブックマーク編集</h2>
           <button type="button" class="close modal-close" data-dismiss="modal" @click="reload" aria-label="Close">
             <i class="bi bi-x-square"></i>
           </button>
         </div>
         <div class="modal-body p-0">
-          <div class="mt-3">
-            <div class="container">
-              <div v-if="bookMarks.length > 0" class="table-responsive bookmarks-table bookmarks-country-name-col"
-                style="overflow-y: scroll ">
-                <table class="table table-hover">
-                  <tbody>
-                    <tr v-for="(value, index) in bookMarks" :key="value.name"
-                      :class="{ 'even': index % 2 === 0, 'odd': index % 2 !== 0 }">
-                      <td scope="col" class="align-middle w-70pct">
-                        {{ value.name }}
-                      </td>
-                      <td scope="col" class="align-middle w-30pct">
-                        <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div v-if="bookMarks.length == 0" class="bookmarks-table">
-                ブックマークがありません
-              </div>
-            </div>
+          <div v-if="bookMarks.length > 0" class="table-responsive mb-4 bookmarks-table bookmarks-country-name-col"
+            style="overflow-y: scroll ">
+            <table class="table table-hover">
+              <tbody>
+                <tr v-for="(value, index) in bookMarks" :key="value.name"
+                  :class="{ 'even': index % 2 === 0, 'odd': index % 2 !== 0 }">
+                  <td scope="col" class="align-middle w-70pct pl-5">
+                    {{ value.name }}
+                  </td>
+                  <div class="text-right">
+                    <td scope="col" class="align-middle pr-5 w-30pct ">
+                      <button class="btn btn-danger" v-on:click="deleteBookmark(value.id)">削除</button>
+                    </td>
+                  </div>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-if="bookMarks.length == 0" class="mb-4  pl-5 bookmarks-table">
+            ブックマークがありません
           </div>
         </div>
       </div>
@@ -90,6 +88,11 @@ export default {
 .even {
   background-color: #F5F2E9;
   ;
+}
+
+
+.pd-y-20px {
+  padding: 0px 20px
 }
 
 .w-70pct {
