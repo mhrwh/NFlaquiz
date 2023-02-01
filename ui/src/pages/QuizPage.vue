@@ -94,12 +94,13 @@
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
+      data-backdrop="static"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">問題</h5>
-            <button class="btn btn-light btn-circle" @click="updateBookmark()">
+            <h5 class="modal-title" id="exampleModalCenterTitle">第{{ currentQuizNumber }}問</h5>
+            <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
               <i class="bi bi-bookmark-heart" />
             </button>
           </div>
@@ -170,6 +171,7 @@
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
+      data-backdrop="static"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -186,16 +188,24 @@
               <div class="col-8">
                 <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
                 <div v-for="(result, number) in results" :key="result">
-                  <div v-if="result">第{{ number+1 }}問.〇</div>
-                  <div v-else>第{{ number+1 }}問.×</div>
+                  <div v-if="result">第{{ number+1 }}問 {{ quizzes[number]["CountryName"] }} 〇
+                    <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
+                      <i class="bi bi-bookmark-heart" />
+                    </button>
+                  </div>
+                  <div v-else>第{{ number+1 }}問 {{ quizzes[number]["CountryName"] }} ×
+                    <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
+                      <i class="bi bi-bookmark-heart" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <button class="btn btn-success" @click="sendResult()">トップへ戻る</button>
-            <button class="btn btn-primary" @click="sendResult()">最初から答える</button>
+            <button class="btn btn-success" @click="toTopPage()">トップへ戻る</button>
+            <button class="btn btn-primary" @click="startOver()">最初から答える</button>
           </div>
         </div>
       </div>
@@ -208,6 +218,7 @@
 import { onMounted, ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
 import axios from "axios";
 
 export default {
@@ -217,6 +228,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const quizzes = computed(() => store.state.quizzes);
 
     const totalQuizNumber = ref(quizzes.value.length);
@@ -234,6 +246,16 @@ export default {
     onMounted(() => {
       updateQuiz();
     });
+
+    const startOver = () => {
+      sendResult();
+      router.go("/quiz");
+    };
+
+    const toTopPage = () => {
+      sendResult();
+      router.push("/");
+    };
 
     // ※このコメントは仕様が理解出来たら削除してOK
     // クイズ回答後, 次のクイズに更新する処理(問題番号のカウントアップなどもここで実装)
@@ -298,8 +320,6 @@ export default {
     const toNextQuiz = () => {
       if (currentQuizNumber.value < totalQuizNumber.value) {
         updateQuiz();
-      } else {
-        sendResult();
       }
     };
 
@@ -316,6 +336,9 @@ export default {
       results,
       correctNumber,
       updateBookmark,
+      startOver,
+      toTopPage,
+      quizzes,
     };
   },
 };
