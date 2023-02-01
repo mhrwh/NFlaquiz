@@ -1,5 +1,6 @@
 <template>
   <div id="svgMap">
+    <slot />
   </div>
 </template>
 
@@ -70,6 +71,6 @@ export default {
 <style>
 .svgMap-map-wrapper {
   background: #9ABBDF;
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
 }
 </style>
