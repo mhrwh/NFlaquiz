@@ -4,6 +4,9 @@
       <div class="modal-content help-modal">
         <div class="modal-header px-0 border-bottom-0">
           <h2 class="modal-title" id="helpModalTitle">ヘルプ</h2>
+          <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-square" />
+          </button>
         </div>
         <div class="modal-body p-0">
           <ul class="nav nav-tabs">
@@ -25,8 +28,7 @@
                 マップ切り替え
               </h4>
               <div class="text-danger">※この機能はログイン時のみ使用可能です。</div>
-              マップには赤系統色で正答率を表すモードと<br>
-              緑系統色でブックマークした国を示すモードの2種類があります。<br><br>
+              マップには赤系統色で正答率を表すモードと緑系統色でブックマークした国を示すモードの2種類があります。<br><br>
 
               <p class="h4">
                 <i class="bi bi-bookmark-heart" />
@@ -44,8 +46,22 @@
 
             </div>
             <div class="tab-pane fade" id="tab2" v-if="selectedTab === 'tab2'">
-              ログインすることでブックマーク機能が使えたり、
-              正答率・ブックマークした国をマップに反映することができます。
+              <p class="h4">
+                ログイン方法
+              </p>
+              ヘッダー部の
+              <i class="bi bi-person-fill" />
+              アイコンを押し、アカウントをお持ちの方はフォームにメールアドレスとパスワードを入力するとログインできます。<br>
+              アカウントをお持ちでない方はアイコンを押したのち、フォーム下部のアカウント登録リンクからアカウントを作成できます。<br><br>
+              <p class="h4">
+                ログインするとできること
+              </p>
+              ログインすることで以下の機能が使用可能になります。
+              <ul>
+                <li>マップ切り替え</li>
+                <li>ブックマーク機能</li>
+              </ul>
+              なお、クイズはログイン状態関係なく遊ぶことができます。
             </div>
           </div>
         </div>
@@ -67,6 +83,7 @@ export default {
 
 <style>
 .tab-content-area {
+  background-color: #FFFFFF;
   height: 500px;
   overflow-y: auto;
 }
