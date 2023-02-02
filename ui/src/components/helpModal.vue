@@ -26,7 +26,7 @@
               </h4>
               <div class="text-danger">※この機能はログイン時のみ使用可能です。</div>
               マップには赤系統色で正答率を表すモードと<br>
-              緑系統色でブックマークした国を示すモードの2種類があります。<br>
+              緑系統色でブックマークした国を示すモードの2種類があります。<br><br>
 
 
 
@@ -35,17 +35,14 @@
                 ブックマーク編集
               </p>
               <div class="text-danger">※この機能はログイン時のみ使用可能です。</div>
-              問題解答後にブックマークした国をブックマークしていない状態に戻すことができます。
+              問題解答後にブックマークした国をブックマークしていない状態に戻すことができます。<br><br>
 
               <p class="h4">
                 <i class="bi bi-flag-fill" />
                 クイズ絞り込み
               </p>
               クイズを始める前に国の地域と国旗の色で出題される国を絞り込むことができます。
-              出題される問題は10問です。
-              a<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>a
-
-
+              出題される問題は10問です。<br><br>
 
             </div>
             <div class="tab-pane fade" id="tab2" v-if="selectedTab === 'tab2'">
@@ -71,18 +68,8 @@ export default {
 </script>
 
 <style>
-.modal-dialog {
-  height: 80%;
-}
-
-.modal-content {
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-}
-
 .tab-content-area {
-  height: 65%;
+  height: 500px;
   overflow-y: auto;
 }
 </style>
