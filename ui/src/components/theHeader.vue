@@ -21,7 +21,7 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 
 export default {
-  name: 'PageHeader',
+  name: 'TheHeader',
   setup() {
     const store = useStore();
     const auth = computed(() => store.state.auth);

@@ -1,14 +1,14 @@
 <template>
-  <PageHeader />
+  <TheHeader />
   <router-view />
 </template>
 
 <script>
-import PageHeader from './components/pageHeader.vue';
+import TheHeader from './components/theHeader.vue';
 export default {
   name: 'App',
   components: {
-    PageHeader
+    TheHeader
   },
 }
 </script>
