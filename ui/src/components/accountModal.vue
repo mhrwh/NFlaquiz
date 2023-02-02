@@ -13,14 +13,14 @@
             <div class="account-form-body">
               <div class="form-group login-form-content">
                 <label class="font-10px d-flex">
-                  <i class="bi bi-envelope-plus me-3px" />
+                  <i class="bi bi-envelope-plus mr-3px" />
                   メールアドレス
                 </label>
                 <input v-model="email" type="email" class="form-control form-control-sm" required>
               </div> 
               <div class="form-group login-form-content">
                 <label class="font-10px d-flex">
-                  <i class="bi bi-ui-radios-grid me-3px" />
+                  <i class="bi bi-ui-radios-grid mr-3px" />
                   パスワード
                 </label>
                 <div class="d-flex">
@@ -29,7 +29,7 @@
                 </div>
               </div>
               <p class="font-10px text-danger d-flex">
-                <i class="bi bi-exclamation-circle me-3px" :class="errmsg ? 'd-block' : 'd-none'" />
+                <i class="bi bi-exclamation-circle mr-3px" :class="errmsg ? 'd-block' : 'd-none'" />
                 {{ errmsg }}
               </p>
             </div>
@@ -56,14 +56,14 @@
             <div class="account-form-body">
               <div class="form-group signup-form-content">
                 <label class="font-10px d-flex">
-                  <i class="bi bi-envelope-plus me-3px" />
+                  <i class="bi bi-envelope-plus mr-3px" />
                   メールアドレス
                 </label>
                 <input v-model="registerEmail" type="email" class="form-control form-control-sm" required>
               </div> 
               <div class="form-group signup-form-content">
                 <label class="font-10px d-flex">
-                  <i class="bi bi-ui-radios-grid me-3px" />
+                  <i class="bi bi-ui-radios-grid mr-3px" />
                   パスワード
                 </label>
                 <div class="d-flex">
@@ -73,7 +73,7 @@
               </div>
               <div class="form-group signup-form-content">
                 <label class="font-10px d-flex">
-                  <i class="bi bi-ui-radios-grid me-3px" />
+                  <i class="bi bi-ui-radios-grid mr-3px" />
                   パスワード(確認)
                 </label>
                 <div class="d-flex">
@@ -82,7 +82,7 @@
                 </div>
               </div>
               <p class="font-10px text-danger d-flex">
-                <i class="bi bi-exclamation-circle me-3px" :class="registerErrmsg ? 'd-block' : 'd-none'" />
+                <i class="bi bi-exclamation-circle mr-3px" :class="registerErrmsg ? 'd-block' : 'd-none'" />
                 {{ registerErrmsg }}
               </p>
             </div>
