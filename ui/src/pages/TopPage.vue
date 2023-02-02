@@ -1,16 +1,15 @@
 <template>
-  <WorldMap v-if="mapMode === 'correctAnswersRate'" :mapMode="mapMode">
-    <IconMenu />
+  <div>
+    <WorldMap v-if="mapMode === 'correctAnswersRate'" :mapMode="mapMode">
+      <IconMenu />
+    </WorldMap>
+    <WorldMap v-else-if="mapMode === 'bookMark'" :mapMode="mapMode">
+      <IconMenu />
+    </WorldMap>
     <QuizFilter />
     <AccountModal />
     <EditBookmark />
-  </WorldMap>
-  <WorldMap v-else-if="mapMode === 'bookMark'" :mapMode="mapMode">
-    <IconMenu />
-    <QuizFilter />
-    <AccountModal />
-    <EditBookmark />
-  </WorldMap>
+  </div>
 </template>
 
 <script>
