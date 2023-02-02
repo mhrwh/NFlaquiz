@@ -89,7 +89,6 @@ export default {
 
 .even {
   background-color: #F5F2E9;
-  ;
 }
 
 
