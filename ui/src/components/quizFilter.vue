@@ -9,15 +9,15 @@
           </button>
         </div>
         <div class="modal-body p-0">
-          <div class="container pl-32px">
+          <div class="container">
             <div class="row py-8px">
               <div class="col">
-                <h3>絞り込み条件</h3>
+                <div class="font-28px">絞り込み条件</div>
               </div>
             </div>
             <div class="row filter-title">
               <div class="col">
-                <p class="font-20px list-20px">地域</p>
+                <div class="font-20px">地域</div>
               </div>
             </div>
             <div class="row pl-28px">
@@ -50,11 +50,11 @@
                   <input id="btn_africa" type="checkbox"  value="Africa" v-model="areas">
                   <label class="font-20px" for="btn_africa">アフリカ</label>
                 </div>
-              </div> 
+              </div>
             </div>
             <div class="row filter-title">
               <div class="col">
-                <li class="font-20px list-20px">色</li>
+                <div class="font-20px">国旗の色</div>
               </div>
             </div>
             <div class="row pl-28px">
@@ -113,19 +113,21 @@
                 </div>
               </div>
             </div>
-            <div class="row filter-title" :class="errmsg ? 'd-block' : 'd-none'">
-              <div class="col">
-                <p class="font-20px text-danger d-flex mb-0 mt-3">
-                  <i class="bi bi-exclamation-circle me-3px" />
-                  {{ errmsg }}
-                </p>
-              </div>
-            </div>
           </div>
         </div>
-        <div class="modal-footer p-0 border-top-0">
-          <button type="button" class="btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
-          <button type="button" class="btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
+        <div class="modal-footer p-0 border-top-0 justify-content-between">
+          <div class="col">
+            <div :class="errmsg ? 'd-block' : 'd-none'">
+              <p class="font-20px text-danger d-flex mb-0">
+                <i class="bi bi-exclamation-circle mr-3px" />
+                {{ errmsg }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="m-1 btn btn-danger btn-quiz font-20px" @click="reset" :disabled="!(areas.length || colors.length || bookmark)">リセット</button>
+            <button type="button" class="m-1 btn btn-primary btn-quiz font-20px" @click="quiz">スタート</button>
+          </div>
         </div>
       </div>
     </div>
@@ -133,11 +135,11 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
+import { ref } from 'vue'
+import axios from 'axios'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'QuizFilter',
@@ -149,7 +151,7 @@ export default {
     let errmsg = ref("");
     let url = '';
     const store = useStore();
-    // const router = useRouter();
+    const router = useRouter();
     const auth = computed(() => store.state.auth);
 
     const reset = () =>{
@@ -157,13 +159,13 @@ export default {
       colors.value.splice(0);
       bookmark.value = false;
     }
-    
+
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
       if (colors.value.length){
         for(let i=0; i<colors.value.length; i++){
           url = url + 'colors[]=' + colors.value[i] + `&`;
-        } 
+        }
       }
       if (areas.value.length){
         for(let i=0; i<areas.value.length; i++){
@@ -180,7 +182,7 @@ export default {
           document.querySelector('body').classList.remove('modal-open');
           document.querySelector('.modal-backdrop').remove();
           document.querySelector('#quizFilterModal').style.display = 'none';
-          // router.push({name: 'QuizPage',});
+          router.push({name: 'QuizPage',});
         }else {
           errmsg.value = "該当する国が存在しません";
         }
@@ -237,7 +239,7 @@ export default {
   margin-right: 7px;
 }
 .filter-title {
-  padding:4px 0 4px 10px;
+  padding:16px 0 4px 26px;
 }
 .btn_wrap{
   display:inline-block;
@@ -283,11 +285,11 @@ export default {
   position: relative;
   margin-bottom: 0;
 }
-.red i {
+.orange i {
   color: #FFCF32;
   font-size: 36px;
 }
-.orange i {
+.red i {
   color: #f00;
   font-size: 36px;
 }
