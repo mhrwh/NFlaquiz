@@ -50,7 +50,7 @@
                   <input id="btn_africa" type="checkbox"  value="Africa" v-model="areas">
                   <label class="font-20px" for="btn_africa">アフリカ</label>
                 </div>
-              </div> 
+              </div>
             </div>
             <div class="row filter-title">
               <div class="col">
@@ -159,13 +159,13 @@ export default {
       colors.value.splice(0);
       bookmark.value = false;
     }
-    
+
     const quiz = async() => {
       url = 'http://localhost:8888/quiz/select?'
       if (colors.value.length){
         for(let i=0; i<colors.value.length; i++){
           url = url + 'colors[]=' + colors.value[i] + `&`;
-        } 
+        }
       }
       if (areas.value.length){
         for(let i=0; i<areas.value.length; i++){
@@ -285,11 +285,11 @@ export default {
   position: relative;
   margin-bottom: 0;
 }
-.red i {
+.orange i {
   color: #FFCF32;
   font-size: 36px;
 }
-.orange i {
+.red i {
   color: #f00;
   font-size: 36px;
 }
