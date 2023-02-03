@@ -20,6 +20,11 @@
         <i class="bi bi-flag-fill" />
       </button>
     </div>
+    <div class="btn-group">
+      <button class="btn btn-light btn-circle" data-toggle="modal" data-target="#helpModal">
+        <i class="bi bi-patch-question" />
+      </button>
+    </div>
   </div>
 </template>
 
