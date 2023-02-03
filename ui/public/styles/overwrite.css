@@ -161,6 +161,7 @@ h3 {
 }
 
 .modal{
+  /* ヘッダーのheight */
   top: 50px;
 }
 .modal-close {
