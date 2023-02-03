@@ -89,7 +89,10 @@
               class="btn btn-light btn-circle"
               @click="updateBookmark(currentQuizNumber - 1)"
             >
-              <i v-if="bookmarks[currentQuizNumber - 1]" class="bi bi-bookmark-heart-fill" />
+              <i
+                v-if="bookmarks[currentQuizNumber - 1]"
+                class="bi bi-bookmark-heart-fill"
+              />
               <i v-else class="bi bi-bookmark-heart"></i>
             </button>
           </div>
