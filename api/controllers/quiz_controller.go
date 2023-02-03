@@ -1,12 +1,12 @@
 package controllers
 
 import (
-  "time"
-  "sort"
 	"errors"
+	"math/rand"
 	"net/http"
+	"sort"
 	"strconv"
-  "math/rand"
+	"time"
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/gin-gonic/gin"
@@ -26,140 +26,136 @@ import (
 //    10問以下のクイズセット
 func SelectQuiz(c *gin.Context) {
 
-  // 絞り込み条件を取得
-  var req models.QuizFilter
-  if err := c.Bind(&req); err != nil {
-    c.JSON(http.StatusBadRequest, err)
-    return
-  }
+	// 絞り込み条件を取得
+	var req models.QuizFilter
+	if err := c.Bind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
 
-  colors := req.Colors
-  areas := req.Areas
-  bookmark, _ := strconv.Atoi(req.Bookmark)
-  user, err := utils.AuthUser(c)
+	colors := req.Colors
+	areas := req.Areas
+	bookmark, _ := strconv.Atoi(req.Bookmark)
+	user, err := utils.AuthUser(c)
 
-  var countries []models.Country
-  var flag_colors []models.FlagColor
-  var results []models.Result
+	// まずは全ての国を候補とする
+	var countries []models.Country
+	country_ids := mapset.NewSet[string]()
+	database.DB.Find(&countries)
+	for _, v := range countries {
+		country_ids.Add(v.ID)
+	}
 
-  // まずは全ての国を候補とする
-  options := mapset.NewSet[string]()
-  database.DB.Find(&countries)
-  for _, v := range countries {
-    options.Add(v.ID)
-  }
+	// 該当地域の国を絞る
+	if len(areas) != 0 {
+		database.DB.Where("area_id in (?)", areas).Find(&countries)
+		filter := mapset.NewSet[string]()
+		for _, v := range countries {
+			filter.Add(v.ID)
+		}
+		country_ids = country_ids.Intersect(filter)
+	}
 
-  // 該当地域の国を絞る
-  if len(areas) != 0 {
-    database.DB.Where("area_id in (?)", areas).Find(&countries)
-    selected := mapset.NewSet[string]()
-    for _, v := range countries {
-      selected.Add(v.ID)
-    }
-    options = options.Intersect(selected)
-  }
+	// 国旗の色が完全一致する国を絞る
+	var flag_colors []models.FlagColor
+	if len(colors) != 0 {
+		database.DB.Select("country_id").Where("color_id in (?)", colors).
+			Group("country_id").Having("count(*) = ?", len(colors)).Find(&flag_colors)
+		filter := mapset.NewSet[string]()
+		for _, v := range flag_colors {
+			filter.Add(v.CountryID)
+		}
+		country_ids = country_ids.Intersect(filter)
+	}
 
-  // 国旗の色が完全一致する国を絞る
-  if len(colors) != 0 {
-    database.DB.Select("country_id").Where("color_id in (?)", colors).
-      Group("country_id").Having("count(*) = ?", len(colors)).Find(&flag_colors)
-    selected := mapset.NewSet[string]()
-    for _, v := range flag_colors {
-      selected.Add(v.CountryID)
-    }
-    options = options.Intersect(selected)
-  }
+	// ユーザーがブックマークした国を絞る
+	var results []models.Result
+	if (err == nil) && (bookmark == 1) {
+		database.DB.Where("user_id=?", user.ID).Where("bookmark=?", bookmark).Find(&results)
+		filter := mapset.NewSet[string]()
+		for _, v := range results {
+			filter.Add(v.CountryID)
+		}
+		country_ids = country_ids.Intersect(filter)
+	}
 
-  // ユーザーがブックマークした国を絞る
-  if  (err == nil) && (bookmark == 1) {
-    database.DB.Where("user_id=?", user.ID).Where("bookmark=?", bookmark).Find(&results)
-    selected := mapset.NewSet[string]()
-    for _, v := range results {
-      selected.Add(v.CountryID)
-    }
-    options = options.Intersect(selected)
-  }
+	// 検索のための型変換
+	var country_ids_array []string
+	country_ids.Each(func(country string) bool {
+		country_ids_array = append(country_ids_array, country)
+		return false
+	})
 
-  // 検索のための型変換
-  var country_array []string
-  options.Each(func(country string) bool {
-    country_array = append(country_array, country)
-    return false
-  })
+	// 絞り込んだ国からクイズを選択
+	if err != nil {
+		// 未ログインユーザーの場合, ランダムにクイズを選択
+		database.DB.Where("id in (?)", country_ids_array).Order("rand()").Limit(10).Find(&countries)
+	} else {
+		// ログイン済みユーザーの場合, 未回答のものを優先して選択
+		query := database.DB.Joins("left outer join results on countries.id = results.country_id").
+			Where("countries.id in (?)", country_ids_array).
+			Where("countries.id not in (?)", database.DB.Table("results").Select("country_id").Where("user_id=?", user.ID)).
+			Order("rand()").Limit(10).Find(&countries)
 
-  // 絞り込んだ国からクイズを選択
-  var quizzes []models.Quiz
+		// 未回答問題数が10未満の場合, 正答率が低い順に残りを埋める
+		left := int(10 - query.RowsAffected)
+		if left > 0 {
+			var low_weight_countries []models.Country
+			low_weight_query := database.DB.Joins("left outer join results on countries.id = results.country_id").
+				Where("countries.id in (?)", country_ids_array).
+				Where("user_id = ?", user.ID).
+				Order("weight").Limit(left).Find(&low_weight_countries)
 
-  if err != nil {
-    // 未ログインユーザーの場合, ランダムにクイズを選択
-    database.DB.Where("quizzes.country_id in (?)", country_array).
-      Order("rand()").Limit(10).Find(&quizzes)
-  } else {
-    // ログイン済みユーザーの場合, 未回答のものを優先して選択
-    query := database.DB.Joins("left outer join results on quizzes.country_id = results.country_id").
-      Where("quizzes.country_id in (?)", country_array).
-      Where("quizzes.country_id not in (?)", database.DB.Table("results").Select("country_id").Where("user_id=?", user.ID)).
-      Order("rand()").Limit(10).Find(&quizzes)
-
-    // 未回答問題数が10未満の場合, 正答率が低い順に残りを埋める
-    left := int(10 - query.RowsAffected)
-    if left > 0 {
-      var low_weight_quizzes []models.Quiz
-      low_weight_query := database.DB.Joins("left outer join results on quizzes.country_id = results.country_id").
-        Where("quizzes.country_id in (?)", country_array).
-        Where("user_id = ?", user.ID).
-        Order("weight").Limit(left).Find(&low_weight_quizzes)
-
-      database.DB.Raw(
+			database.DB.Raw(
 				"(?) UNION (?)",
 				query,
 				low_weight_query,
-			).Scan(&quizzes)
-    }
-  }
+			).Scan(&countries)
+		}
+	}
 
-  // 選択肢の生成
-  database.DB.Find(&countries)
-  rand.Seed(time.Now().UnixNano())
-  var country_names []string
-  var name_options [][]string
+	// 選択肢の生成
+	var all_countries []models.Country
+	database.DB.Find(&all_countries)
+	rand.Seed(time.Now().UnixNano())
+	var country_names []string
+	var options [][]string
 
-  for _, country := range countries {
-    country_names = append(country_names, country.Name)
-  }
+	for _, country := range all_countries {
+		country_names = append(country_names, country.Name)
+	}
 
-  for i := 0; i < len(quizzes); i++ {
-    var tmp []string = []string{quizzes[i].CountryName}
+	for i := 0; i < len(countries); i++ {
+		var option []string = []string{countries[i].Name}
 
-    for j := 0; j < 3; j++ {
-      for {
-        var country_name = country_names[rand.Intn(len(country_names))]
-        if utils.Contains(tmp, country_name) == false {
-          tmp = append(tmp, country_name)
-          break
-        }
-      }
-    }
+		for j := 0; j < 3; j++ {
+			for {
+				var country_name = country_names[rand.Intn(len(country_names))]
+				if !utils.Contains(option, country_name) {
+					option = append(option, country_name)
+					break
+				}
+			}
+		}
 
-    sort.Slice(tmp, func(i, j int) bool {
-      return tmp[i] < tmp[j]
-    })
+		sort.Slice(option, func(i, j int) bool {
+			return option[i] < option[j]
+		})
 
-    name_options = append(name_options, tmp)
-  }
+		options = append(options, option)
+	}
 
-  var quiz_with_options []models.QuizWithOption
-  for  i, quiz := range quizzes {
-    quiz_with_options = append(quiz_with_options, models.QuizWithOption{
-      ID: quiz.ID,
-      CountryName: quiz.CountryName,
-      CountryID: quiz.CountryID,
-      Hints: []string{quiz.Hint1, quiz.Hint2, quiz.Hint3},
-      Options: name_options[i],
-    })
-  }
+	var quizzes []models.Quiz
+	for i, country := range countries {
+		quizzes = append(quizzes, models.Quiz{
+			CountryName: country.Name,
+			CountryID:   country.ID,
+			Hints:       []string{country.Hint1, country.Hint2, country.Hint3},
+			Options:     options[i],
+		})
+	}
 
-  c.JSON(http.StatusOK, gin.H{"quizzes": quiz_with_options})
+	c.JSON(http.StatusOK, gin.H{"quizzes": quizzes})
 }
 
 // クイズの回答状況をもとにResultを更新する
@@ -181,7 +177,7 @@ func UpdateResult(c *gin.Context) {
 	// ユーザーが認証されていない場合
 	user, err := utils.AuthUser(c)
 	if err != nil {
-    c.JSON(http.StatusUnauthorized, gin.H{"err_msg": "認証されていません"})
+		c.JSON(http.StatusUnauthorized, gin.H{"err_msg": "認証されていません"})
 		return
 	}
 
@@ -200,16 +196,16 @@ func UpdateResult(c *gin.Context) {
 			}
 			new_result := models.Result{
 				CountryID: v.CountryID,
-				UserID: user.ID,
-				Weight: weight,
-				Bookmark: v.Bookmark,
+				UserID:    user.ID,
+				Weight:    weight,
+				Bookmark:  v.Bookmark,
 			}
 			database.DB.Create(&new_result)
 
 		} else {
 			// 過去に回答したことのあるクイズの場合はResultを更新
 			weight := result.Weight
-			if v.Answer == 1 && result.Weight <= 0.75{
+			if v.Answer == 1 && result.Weight <= 0.75 {
 				weight += 0.25
 			} else if v.Answer == 0 && result.Weight >= 0.5 {
 				weight -= 0.25
