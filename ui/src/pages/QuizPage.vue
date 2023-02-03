@@ -26,7 +26,7 @@
         </div>
 
         <!-- 回答ボタンを表示する領域 -->
-        <div class="col-md-8 offset-md-2 text-center mt-5">
+        <div class="col-md-8 offset-md-2 text-center mt-2">
           <div class="btn-box">
             <button
               v-for="(option, index) in options"
