@@ -1,18 +1,5 @@
 <template>
   <div class="quizapp">
-    <!-- <QuizScreen /> -->
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-main-green">
-      <a class="navbar-brand">
-        <img
-          src="../assets/NFlaquizlogo.png"
-          width="30"
-          height="30"
-          class="d-inline-block align-top mr-2"
-          alt=""
-        />
-        NFlaquiz
-      </a>
-    </nav> -->
     <div class="container">
       <div class="row my-3">
         <div class="col-12">
@@ -25,11 +12,7 @@
         <!-- 問題数を表示する領域 -->
         <div class="col-md-8 offset-md-2">
           第{{ currentQuizNumber }}問 / 全{{ totalQuizNumber }}問
-          <button
-            class="hint-btn" 
-            data-toggle="modal" 
-            data-target="#hintModal"
-          >
+          <button class="hint-btn" data-toggle="modal" data-target="#hintModal">
             ヒント
           </button>
         </div>
@@ -64,7 +47,7 @@
 
     <!-- ヒントを表示するモーダル -->
 
-    <div 
+    <div
       class="modal"
       id="hintModal"
       role="dialog"
@@ -79,7 +62,7 @@
           </div>
 
           <div class="modal-body" v-for="(hint, number) in hints" :key="hint">
-            ヒント{{ number+1 }}：{{ hint }}
+            ヒント{{ number + 1 }}：{{ hint }}
           </div>
         </div>
       </div>
@@ -99,8 +82,13 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">第{{ currentQuizNumber }}問</h5>
-            <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
+            <h5 class="modal-title" id="exampleModalCenterTitle">
+              第{{ currentQuizNumber }}問
+            </h5>
+            <button
+              class="btn btn-light btn-circle"
+              @click="updateBookmark(currentQuizNumber - 1)"
+            >
               <i class="bi bi-bookmark-heart" />
             </button>
           </div>
@@ -141,18 +129,21 @@
           </div>
 
           <div class="modal-footer">
-            <button 
-              v-show="currentQuizNumber < totalQuizNumber" 
-              type="button" class="btn btn-primary" 
-              data-dismiss="modal" 
+            <button
+              v-show="currentQuizNumber < totalQuizNumber"
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
               @click="toNextQuiz()"
             >
               次の問題へ
             </button>
-            <button 
-              v-if="currentQuizNumber == totalQuizNumber" 
-              type="button" class="btn btn-primary" 
-              data-toggle="modal" data-target="#answerEndedModal" 
+            <button
+              v-if="currentQuizNumber == totalQuizNumber"
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#answerEndedModal"
               @click="toNextQuiz()"
             >
               結果へ
@@ -197,32 +188,26 @@
                         class="btn btn-light btn-circle"
                         @click="updateBookmark(number)"
                       >
-                        <i v-if="bookmarks[number]" class="bi bi-bookmark-heart-fill" />
+                        <i
+                          v-if="bookmarks[number]"
+                          class="bi bi-bookmark-heart-fill"
+                        />
                         <i v-else class="bi bi-bookmark-heart"></i>
                       </button>
                     </td>
                   </tr>
                 </table>
-                <!-- <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
-                <div v-for="(result, number) in results" :key="result">
-                  <div v-if="result">第{{ number+1 }}問 {{ quizzes[number]["CountryName"] }} 〇
-                    <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
-                      <i class="bi bi-bookmark-heart" />
-                    </button>
-                  </div>
-                  <div v-else>第{{ number+1 }}問 {{ quizzes[number]["CountryName"] }} ×
-                    <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
-                      <i class="bi bi-bookmark-heart" />
-                    </button>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <button class="btn btn-success" @click="toTopPage()">トップへ戻る</button>
-            <button class="btn btn-primary" @click="startOver()">最初から答える</button>
+            <button class="btn btn-success" @click="toTopPage()">
+              トップへ戻る
+            </button>
+            <button class="btn btn-primary" @click="startOver()">
+              最初から答える
+            </button>
           </div>
         </div>
       </div>
@@ -235,7 +220,7 @@
 import { onMounted, ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 import axios from "axios";
 
 export default {
@@ -278,9 +263,6 @@ export default {
       router.push("/");
     };
 
-    // ※このコメントは仕様が理解出来たら削除してOK
-    // クイズ回答後, 次のクイズに更新する処理(問題番号のカウントアップなどもここで実装)
-    // 次の問題に行く処理の中で呼び出される想定
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
       const currentQuiz = quizzes.value[currentQuizNumber.value - 1];
@@ -295,22 +277,10 @@ export default {
         ".svg";
     };
 
-    // ※このコメントは仕様が理解出来たら削除してOK
-    // ブックマーク登録の有無を反転させる
-    // 例(5問中)
-    // 2問目のクイズをブックマーク登録する
-    // updateBookmark(1) => bookmarks = [0,1,0,0,0]
-    // 3問目のクイズをブックマーク登録する
-    // updateBookmark(2) => bookmarks = [0,1,1,0,0]
-    // 3問目のクイズのブックマークを解除
-    // updateBookmark(2) => bookmarks = [0,1,0,0,0]
     const updateBookmark = (quiz_index) => {
       bookmarks.value[quiz_index] = bookmarks.value[quiz_index] === 0 ? 1 : 0;
     };
 
-    // ※このコメントは仕様が理解出来たら削除してOK
-    // APIにデータを送信する
-    // ゲーム終了後, "トップへ戻る"/"最初からやり直す"ボタンがクリックされた時に呼び出される想定
     const sendResult = async () => {
       const sendingData = [];
       for (let i = 0; i < totalQuizNumber.value; i++) {
@@ -333,7 +303,7 @@ export default {
       isCorrect.value = option === correctAnswer.value;
       results.value.push(isCorrect.value ? 1 : 0);
       if (isCorrect.value) {
-        correctNumber.value.push(1)
+        correctNumber.value.push(1);
       }
     };
 
@@ -366,7 +336,6 @@ export default {
 </script>
 
 <style>
-
 .btn-box button:active {
   margin-top: 0.2em;
 }
@@ -375,7 +344,7 @@ export default {
   display: block;
   margin: 5px 0 0 auto;
   background: rgb(221, 82, 47);
-  border-radius:10px;
+  border-radius: 10px;
   color: #fff;
   box-shadow: 0 1px 0 #988588;
   border: solid 3px #668d1f00;
