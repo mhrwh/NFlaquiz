@@ -187,6 +187,23 @@
 
               <div class="col-8">
                 <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
+                <table>
+                  <tr v-for="(result, number) in results" :key="result">
+                    <td>第{{ number + 1 }}問</td>
+                    <td>{{ quizzes[number]["CountryName"] }}</td>
+                    <td>{{ result ? "〇" : " ×" }}</td>
+                    <td>
+                      <button
+                        class="btn btn-light btn-circle"
+                        @click="updateBookmark(number)"
+                      >
+                        <i v-if="bookmarks[number]" class="bi bi-bookmark-heart-fill" />
+                        <i v-else class="bi bi-bookmark-heart"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <!-- <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
                 <div v-for="(result, number) in results" :key="result">
                   <div v-if="result">第{{ number+1 }}問 {{ quizzes[number]["CountryName"] }} 〇
                     <button class="btn btn-light btn-circle" @click="updateBookmark(currentQuizNumber - 1)">
@@ -198,7 +215,7 @@
                       <i class="bi bi-bookmark-heart" />
                     </button>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -253,6 +270,10 @@ export default {
     };
 
     const toTopPage = () => {
+      const backdropElems = document.querySelectorAll(".modal-backdrop");
+      for (const elem of backdropElems) {
+        elem.remove();
+      }
       sendResult();
       router.push("/");
     };
