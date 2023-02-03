@@ -11,7 +11,7 @@
         <div class="modal-body p-0">
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#tab1" @click="selectedTab = 'tab1'">
+              <a class="nav-link active" data-toggle="tab" href="#buttonDescription" @click="selectedTab = 'buttonDescription'">
                 ボタンの説明
               </a>
             </li>
