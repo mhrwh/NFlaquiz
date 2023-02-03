@@ -9,6 +9,7 @@
     <QuizFilter />
     <AccountModal />
     <EditBookmark />
+    <HelpModal />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import AccountModal from '@/components/accountModal.vue';
 import WorldMap from '@/components/worldMap.vue';
 import QuizFilter from "@/components/quizFilter.vue";
 import EditBookmark from "@/components/EditBookmark.vue";
+import HelpModal from "@/components/helpModal.vue";
 import IconMenu from '@/components/iconMenu.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
@@ -28,6 +30,7 @@ export default {
     AccountModal,
     QuizFilter,
     EditBookmark,
+    HelpModal,
     IconMenu
 },
   setup() {
