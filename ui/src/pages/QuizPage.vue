@@ -181,13 +181,14 @@
               </div>
 
               <div class="col-8">
-                <p>正答数は{{ correctNumber.length }}/{{ totalQuizNumber }}</p>
+                <p v-if="correctNumber.length == totalQuizNumber">全問正解！</p>
+                <p v-else>{{ totalQuizNumber }}問中{{ correctNumber.length }}問正解！</p>
                 <table>
-                  <tr v-for="(result, number) in results" :key="result">
-                    <td>第{{ number + 1 }}問</td>
-                    <td>{{ quizzes[number]["CountryName"] }}</td>
-                    <td>{{ result ? "〇" : " ×" }}</td>
-                    <td>
+                  <tr v-for="(result, number) in results" :key="result" class="border-bottom">
+                    <td class="px-2">第{{ number + 1 }}問</td>
+                    <td class="px-2">{{ quizzes[number]["CountryName"] }}</td>
+                    <td class="px-2">{{ result ? "〇" : " ×" }}</td>
+                    <td class="px-2">
                       <button
                         class="btn btn-light btn-circle"
                         @click="updateBookmark(number)"
