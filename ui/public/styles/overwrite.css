@@ -214,6 +214,10 @@ button.modal-close {
   border: 0;
 }
 
+.modal-close:focus, .modal-close.focus {
+  outline: none;
+}
+
 .modal-sm {
   max-width: 232px;
 }
