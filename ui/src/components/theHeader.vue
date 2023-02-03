@@ -1,8 +1,7 @@
 <template>
-  <nav class="navbar flex-nowrap navbar-light header">
+  <nav class="navbar flex-nowrap navbar-light border-bottom header">
     <a class="navbar-brand">
-      <img src="@/assets/NFlaquizlogo.png" width="30" height="30" class="d-inline-block align-top mr-2" alt="">
-      NFlaquiz
+      <img src="@/assets/NFlaquizlogo.png" width="50" height="50" class="d-inline-block align-top" alt="">
     </a>
     <div class="navbar-brand" v-if="$route.name==='TopPage'">
       <button class="btn btn-header" data-toggle="modal" data-target="#loginModal" data-backdrop="false" v-if="!auth">
