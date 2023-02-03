@@ -89,7 +89,8 @@
               class="btn btn-light btn-circle"
               @click="updateBookmark(currentQuizNumber - 1)"
             >
-              <i class="bi bi-bookmark-heart" />
+              <i v-if="bookmarks[currentQuizNumber - 1]" class="bi bi-bookmark-heart-fill" />
+              <i v-else class="bi bi-bookmark-heart"></i>
             </button>
           </div>
 
@@ -330,7 +331,7 @@ export default {
       startOver,
       toTopPage,
       quizzes,
-      bookmarks
+      bookmarks,
     };
   },
 };
