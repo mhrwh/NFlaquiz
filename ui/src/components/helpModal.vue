@@ -16,50 +16,61 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tab2" @click="selectedTab = 'tab2'">
+              <a class="nav-link" data-toggle="tab" href="#loginDescription" @click="selectedTab = 'loginDescription'">
                 ログイン機能
               </a>
             </li>
           </ul>
-          <div class="tab-content tab-content-area">
-            <div class="tab-pane fade show active" id="tab1" v-if="selectedTab === 'tab1'">
+          <div class="tab-content tab-content-area p-3">
+            <div class="tab-pane fade show active" id="buttonDescription" v-if="selectedTab === 'buttonDescription'">
               <h4>
                 <i class="bi bi-layout-sidebar-inset" />
                 マップ切り替え
               </h4>
               <div class="text-danger">※この機能はログイン時のみ使用可能です。</div>
-              マップには赤系統色で正答率を表すモードと緑系統色でブックマークした国を示すモードの2種類があります。<br><br>
+              ログインすると地図が赤もしくは緑系統色で色分けされています。<br>
+              赤系統色は正答率を表すモードで緑系統色はブックマークした国を示すモードの2種類があり、このボタンを押すことで切り替えることが可能です。<br><br>
 
-              <p class="h4">
+              <h4>
                 <i class="bi bi-bookmark-heart" />
                 ブックマーク編集
-              </p>
+              </h4>
               <div class="text-danger">※この機能はログイン時のみ使用可能です。</div>
               問題解答後にブックマークした国をブックマークしていない状態に戻すことができます。<br><br>
 
-              <p class="h4">
+              <h4>
                 <i class="bi bi-flag-fill" />
                 クイズ絞り込み
-              </p>
+              </h4>
+              このボタンからクイズを始めることができます。<br>
               クイズを始める前に国の地域と国旗の色で出題される国を絞り込むことができます。
               出題される問題は10問です。<br><br>
 
             </div>
-            <div class="tab-pane fade" id="tab2" v-if="selectedTab === 'tab2'">
-              <p class="h4">
+            <div class="tab-pane fade" id="loginDescription" v-if="selectedTab === 'loginDescription'">
+              <h4>
                 ログイン方法
-              </p>
-              ヘッダー部の
+              </h4>
+              画面右上の
               <i class="bi bi-person-fill" />
               アイコンを押し、アカウントをお持ちの方はフォームにメールアドレスとパスワードを入力するとログインできます。<br>
               アカウントをお持ちでない方はアイコンを押したのち、フォーム下部のアカウント登録リンクからアカウントを作成できます。<br><br>
-              <p class="h4">
+
+              <h4>
+                ログアウト方法
+              </h4>
+              ログイン状態で画面右上の
+              <i class="bi bi-person-check-fill" />
+              アイコンを押すとログアウトできます。<br><br>
+              
+              <h4>
                 ログインするとできること
-              </p>
+              </h4>
               ログインすることで以下の機能が使用可能になります。
               <ul>
-                <li>マップ切り替え</li>
-                <li>ブックマーク機能</li>
+                <li>地図が色分けされる</li>
+                <li>地図表示切り替え</li>
+                <li>ブックマーク追加・削除</li>
               </ul>
               なお、クイズはログイン状態関係なく遊ぶことができます。
             </div>
@@ -74,8 +85,7 @@
 export default {
   data() {
     return {
-      showMore: false,
-      selectedTab: 'tab1'
+      selectedTab: 'buttonDescription'
     }
   }
 }
