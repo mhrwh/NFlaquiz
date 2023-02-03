@@ -57,12 +57,12 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            ヒント
+            <p>ヒント</p>
             <button class="hint-close" data-dismiss="modal">×</button>
           </div>
 
-          <div class="modal-body" v-for="(hint, number) in hints" :key="hint">
-            ヒント{{ number + 1 }}：{{ hint }}
+          <div class="modal-body">
+            <p class="m-4 text-center">{{ hint }}</p>
           </div>
         </div>
       </div>
@@ -182,9 +182,15 @@
 
               <div class="col-8">
                 <p v-if="correctNumber.length == totalQuizNumber">全問正解！</p>
-                <p v-else>{{ totalQuizNumber }}問中{{ correctNumber.length }}問正解！</p>
+                <p v-else>
+                  {{ totalQuizNumber }}問中{{ correctNumber.length }}問正解！
+                </p>
                 <table>
-                  <tr v-for="(result, number) in results" :key="result" class="border-bottom">
+                  <tr
+                    v-for="(result, number) in results"
+                    :key="result"
+                    class="border-bottom"
+                  >
                     <td class="px-2">第{{ number + 1 }}問</td>
                     <td class="px-2">{{ quizzes[number]["CountryName"] }}</td>
                     <td class="px-2">{{ result ? "〇" : " ×" }}</td>
@@ -241,7 +247,7 @@ export default {
     const totalQuizNumber = ref(quizzes.value.length);
     const currentQuizNumber = ref(0);
     const correctAnswer = ref();
-    const hints = ref();
+    const hint = ref();
     const options = ref();
     const flagImgPath = ref();
     const results = ref([]);
@@ -271,8 +277,9 @@ export default {
     const updateQuiz = () => {
       currentQuizNumber.value += 1;
       const currentQuiz = quizzes.value[currentQuizNumber.value - 1];
+      const hints = currentQuiz["Hints"];
+      hint.value = hints[Math.floor(Math.random() * hints.length)];
       correctAnswer.value = currentQuiz["CountryName"];
-      hints.value = currentQuiz["Hints"];
       options.value = currentQuiz["Options"];
 
       const countryID = currentQuiz["CountryID"].toLowerCase();
@@ -322,7 +329,7 @@ export default {
     return {
       currentQuizNumber,
       correctAnswer,
-      hints,
+      hint,
       options,
       flagImgPath,
       totalQuizNumber,
