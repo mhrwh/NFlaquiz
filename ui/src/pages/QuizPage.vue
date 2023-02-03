@@ -330,6 +330,7 @@ export default {
       startOver,
       toTopPage,
       quizzes,
+      bookmarks
     };
   },
 };
