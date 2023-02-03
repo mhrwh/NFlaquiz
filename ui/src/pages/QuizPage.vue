@@ -40,7 +40,7 @@
             </button>
           </div>
 
-          <p class="text-center">正解の国名をクリックしよう！</p>
+          <p class="text-center mt-4">正解の国名をクリックしよう！</p>
         </div>
       </div>
     </div>
@@ -391,7 +391,8 @@ export default {
   text-decoration: none;
   background: #81ff89;
   color: #fff;
-  width: 130px;
+  width: 200px;
+  margin-top: 20px;
   height: 80px;
   line-height: 80px;
   border-radius: 50%;
