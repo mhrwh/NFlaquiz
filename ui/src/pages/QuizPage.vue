@@ -26,7 +26,7 @@
         </div>
 
         <!-- 回答ボタンを表示する領域 -->
-        <div class="col-md-8 offset-md-2 text-center mt-5">
+        <div class="col-md-8 offset-md-2 text-center mt-2">
           <div class="btn-box">
             <button
               v-for="(option, index) in options"
@@ -40,7 +40,7 @@
             </button>
           </div>
 
-          <p class="text-center">正解の国名をクリックしよう！</p>
+          <p class="text-center mt-4">正解の国名をクリックしよう！</p>
         </div>
       </div>
     </div>
@@ -168,7 +168,7 @@
       aria-hidden="true"
       data-backdrop="static"
     >
-      <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">おつかれさまでした！</div>
 
@@ -391,7 +391,8 @@ export default {
   text-decoration: none;
   background: #81ff89;
   color: #fff;
-  width: 130px;
+  width: 200px;
+  margin-top: 20px;
   height: 80px;
   line-height: 80px;
   border-radius: 50%;
