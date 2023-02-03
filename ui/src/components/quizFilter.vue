@@ -135,11 +135,11 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
+import { ref } from 'vue'
+import axios from 'axios'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'QuizFilter',
@@ -151,7 +151,7 @@ export default {
     let errmsg = ref("");
     let url = '';
     const store = useStore();
-    // const router = useRouter();
+    const router = useRouter();
     const auth = computed(() => store.state.auth);
 
     const reset = () =>{
@@ -182,7 +182,7 @@ export default {
           document.querySelector('body').classList.remove('modal-open');
           document.querySelector('.modal-backdrop').remove();
           document.querySelector('#quizFilterModal').style.display = 'none';
-          // router.push({name: 'QuizPage',});
+          router.push({name: 'QuizPage',});
         }else {
           errmsg.value = "該当する国が存在しません";
         }
